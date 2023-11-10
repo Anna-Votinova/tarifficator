@@ -28,7 +28,7 @@ public record ClientDto(
         String passportNumber,
 
         @Schema(description = "Место рождения", example = "Moscow")
-        String birthdayPlace,
+        String birthPlace,
 
         @Schema(description = "Номер телефона", example = "7ХХХХХХХХХХ")
         String phoneNumber,

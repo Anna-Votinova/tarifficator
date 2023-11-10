@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Адрес регистрации или место жительтсва клиента")
 public record AddressDto(
-        @Schema(description = "Идентификатор клиента", example = "1")
+        @Schema(description = "Идентификатор адреса", example = "1")
         Long id,
 
         @Schema(description = "Регион", example = "Voronezh region")
