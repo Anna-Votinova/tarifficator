@@ -1,6 +1,5 @@
 package com.neoflex.credentials.service.util;
 
-import com.neoflex.credentials.dto.enums.ApplicationType;
 import com.neoflex.credentials.service.util.impl.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -8,12 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidatorFactory {
 
-    public static Validator getValidator(ApplicationType applicationType) {
-        return switch (applicationType) {
-            case MAIL -> new MailAppValidator();
-            case MOBILE -> new MobileAppValidator();
-            case BANK -> new BankAppValidator();
-            case GOSUSLUGI -> new GosuslugiAppValidator();
+    public static Validator getValidator(String applicationType) {
+        return switch (applicationType.toLowerCase()) {
+            case "mail" -> new MailAppValidator();
+            case "mobile" -> new MobileAppValidator();
+            case "bank" -> new BankAppValidator();
+            case "gosuslugi" -> new GosuslugiAppValidator();
             default -> new DefaultAppValidator();
         };
     }
