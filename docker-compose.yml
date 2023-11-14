@@ -1,0 +1,23 @@
+version: '4.25.1.0'
+
+services:
+
+  credentials-db:
+    image: postgres:16-alpine
+    container_name: credentials-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=credentials
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  credentials:
+    build: credentials
+    container_name: credentials
+    ports:
+      - "8081:8081"
+    depends_on:
+      - credentials-db
+    env_file:
+      - secret.env
