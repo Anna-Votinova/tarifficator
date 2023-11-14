@@ -30,7 +30,7 @@ public class CredentialsController {
     @Operation(summary = "Создание учетной записи",
             description = "Создает учетные записи клиента на основе данных, пришедших из того или иного сервиса")
     @PostMapping("/create")
-    public ClientDto createClient(@RequestHeader(APPLICATION) String applicationType,
+    public ClientDto createClient(@RequestHeader(value = APPLICATION) String applicationType,
                                   @RequestBody ClientDto clientDto) {
         log.info("Got the request for creating client from application = {}", applicationType);
         return credentialService.createClient(applicationType, clientDto);

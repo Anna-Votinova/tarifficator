@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ValidatorFactory {
+public final class ValidatorFactory {
 
     public static Validator getValidator(String applicationType) {
         return switch (applicationType.toLowerCase()) {
@@ -13,7 +13,7 @@ public class ValidatorFactory {
             case "mobile" -> new MobileAppValidator();
             case "bank" -> new BankAppValidator();
             case "gosuslugi" -> new GosuslugiAppValidator();
-            default -> new DefaultAppValidator();
+            default -> null;
         };
     }
 }
