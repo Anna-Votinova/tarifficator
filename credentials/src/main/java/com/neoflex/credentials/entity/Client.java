@@ -33,7 +33,7 @@ public class Client {
     @Column(name = "passport_number")
     private String passportNumber;
 
-    @Column(name = "birthday_place")
+    @Column(name = "birth_place")
     private String birthPlace;
 
     @Column(name = "phone_number")

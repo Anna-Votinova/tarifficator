@@ -31,7 +31,7 @@ public class CredentialService {
     private final CustomAppValidator customAppValidator;
 
     public ClientDto createClient(String applicationType, ClientDto clientDto) {
-        checkApplicationType(applicationType);//попробовать без него
+        checkApplicationTypeExists(applicationType);
         validateCredentials(applicationType, clientDto);
         Client client = ClientMapper.toClient(clientDto);
 
@@ -68,8 +68,9 @@ public class CredentialService {
         if (Objects.isNull(validator)) {
             log.info("Default validator for application {} does not exist", applicationType);
             customAppValidator.validate(applicationType, clientDto);
+        } else {
+            validator.validate(clientDto);
         }
-        validator.validate(clientDto);
     }
 
     private List<Criteria> getCriteria(ClientFieldsDto clientFieldsDto) {
@@ -95,7 +96,7 @@ public class CredentialService {
         return criteria;
     }
 
-    private void checkApplicationType(String applicationType) {
+    private void checkApplicationTypeExists(String applicationType) {
         log.info("Check application type {} on emptiness", applicationType);
         if (applicationType.isBlank()) {
             throw new ValidationException("Название приложения должно быть указано");

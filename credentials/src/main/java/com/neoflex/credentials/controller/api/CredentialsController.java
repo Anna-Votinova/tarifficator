@@ -47,7 +47,17 @@ public class CredentialsController {
     @Operation(summary = "Поиск учетной записи по полям",
             description = "Возвращает данные клиента или клиентов в зависимости от введенных параметров")
     @GetMapping("/find/parameters")
-    public List<ClientDto> getClientByParameters(@RequestBody ClientFieldsDto clientFieldsDto) {
+    public List<ClientDto> getClientByParameters(
+            @Parameter(description = "Фамилия", example = "Orlova") @RequestParam(required = false) String lastname,
+            @Parameter(description = "Имя", example = "Ekaterina") @RequestParam(required = false) String firstname,
+            @Parameter(description = "Отчество", example = "Alexandrovna")
+            @RequestParam(required = false) String middleName,
+            @Parameter(description = "Номер телефона", example = "79999999999")
+            @RequestParam(required = false) String phoneNumber,
+            @Parameter(description = "Электронный почтовый ящик", example = "anyvotinova@yandex.ru")
+            @RequestParam(required = false) String email
+            ) {
+        ClientFieldsDto clientFieldsDto = new ClientFieldsDto(lastname, firstname, middleName, phoneNumber, email);
         log.info("Got the request for getting client(s) by parameters from DTO = {}", clientFieldsDto);
         return credentialService.getClientByParameters(clientFieldsDto);
     }

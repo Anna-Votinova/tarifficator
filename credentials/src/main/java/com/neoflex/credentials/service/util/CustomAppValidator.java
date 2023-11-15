@@ -30,6 +30,7 @@ public class CustomAppValidator {
     public void validate(String applicationType, ClientDto clientDto) {
         log.info("Find application {} in properties", applicationType);
         List<String> fields = getCheckingFields(applicationType.toLowerCase());
+        log.info("Fields for validation: {}", fields);
 
         if (fields.isEmpty()) {
             throw new ApplicationNotSupportedException("Приложение " + applicationType + " не поддерживается");
@@ -99,8 +100,8 @@ public class CustomAppValidator {
     }
 
     private void validateStringField(String field) {
-        if (field.isBlank()) {
-            throw new InvalidCredentialsException("Поле не должно быть пустым");
+        if (NullOrBlankUtil.isNullOrBlank(field)) {
+            throw new InvalidCredentialsException("Поле не должно быть пустым или равно null");
         }
     }
 }

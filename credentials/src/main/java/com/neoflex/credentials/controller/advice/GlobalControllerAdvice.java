@@ -6,6 +6,7 @@ import com.neoflex.credentials.dto.error.Violation;
 import com.neoflex.credentials.exeption.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -68,6 +69,17 @@ public class GlobalControllerAdvice {
         List<Violation> violations = e.getConstraintViolations().stream()
                 .map(violation -> new Violation(violation.getPropertyPath().toString(),
                         violation.getMessage()))
+                .toList();
+        return new ValidationErrorResponse(violations);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
+        List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
                 .toList();
         return new ValidationErrorResponse(violations);
     }

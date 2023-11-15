@@ -13,17 +13,21 @@ import java.util.Objects;
 public final class CheckAddressUtil {
 
     public static void checkAddress(AddressDto addressDto) {
-        log.info("Check client address region = {}; city = {}; street = {}; building number = {}, apartment number = {}, " +
-                        "address type = {}", addressDto.region(), addressDto.city(), addressDto.street(),
-                addressDto.buildingNumber(), addressDto.apartmentNumber(), addressDto.addressType());
+        log.info("Check client {} address", addressDto.addressType());
 
-        if (addressDto.region().isBlank() || addressDto.city().isBlank()
-                || addressDto.street().isBlank() || addressDto.buildingNumber().isBlank()
-                || addressDto.apartmentNumber().isBlank()|| Objects.isNull(addressDto.addressType())) {
-            throw new InvalidCredentialsException("Bank_id, фамилия, имя, отчество, дата рождения и номер паспорта не " +
-                    "должны быть пустыми.");
+        if (isNotValid(addressDto)) {
+            throw new InvalidCredentialsException("Регион, город, улица, номера дома и квартиры, тип адреса должны " +
+                    "быть заполнены.");
         }
         log.info("All parameters of the address = {} are correct", addressDto);
+    }
 
+    private static boolean isNotValid(AddressDto addressDto) {
+        return NullOrBlankUtil.isNullOrBlank(addressDto.region())
+                || NullOrBlankUtil.isNullOrBlank(addressDto.city())
+                || NullOrBlankUtil.isNullOrBlank(addressDto.street())
+                || NullOrBlankUtil.isNullOrBlank(addressDto.buildingNumber())
+                || NullOrBlankUtil.isNullOrBlank(addressDto.apartmentNumber())
+                || Objects.isNull(addressDto.addressType());
     }
 }

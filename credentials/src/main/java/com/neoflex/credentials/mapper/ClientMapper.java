@@ -25,6 +25,7 @@ public final class ClientMapper {
         client.setPassportNumber(clientDto.passportNumber());
         client.setBirthPlace(clientDto.birthPlace());
         client.setPhoneNumber(clientDto.phoneNumber());
+        client.setEmail(clientDto.email());
         client.setRegistrationAddress(Objects.isNull(clientDto.registrationAddress())
                 ? null
                 : toAddress(clientDto.registrationAddress()));
@@ -38,7 +39,7 @@ public final class ClientMapper {
     private static Address toAddress(AddressDto addressDto) {
         Address address = new Address();
 
-        address.setId( addressDto.id());
+        address.setId(addressDto.id());
         address.setRegion(addressDto.region());
         address.setCity(addressDto.city());
         address.setStreet(addressDto.street());
@@ -63,7 +64,7 @@ public final class ClientMapper {
                 client.getPhoneNumber(),
                 client.getEmail(),
                 addressDto(client.getRegistrationAddress()),
-                addressDto(client.getRegistrationAddress())
+                addressDto(client.getResidentialAddress())
         );
     }
 
