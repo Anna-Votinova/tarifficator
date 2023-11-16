@@ -28,7 +28,8 @@ public class CredentialsController {
     private final CredentialService credentialService;
 
     @Operation(summary = "Создание учетной записи",
-            description = "Создает учетные записи клиента на основе данных, пришедших из того или иного сервиса")
+            description = "Создает учетные записи клиента на основе данных, пришедших из того или иного сервиса. " +
+                    "Возможные варианты сервисов: mail, mobile, bank, gosuslugi")
     @PostMapping("/create")
     public ClientDto createClient(@RequestHeader(value = APPLICATION) String applicationType,
                                   @RequestBody ClientDto clientDto) {

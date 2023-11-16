@@ -56,7 +56,28 @@
 - JUnit
 - Docker
 
+## Запуск проекта в Docker
+
+1. Прописать url, username и password для базы данных в файле secret.env;
+2. Собрать сервис в пакет .jar (например, через вкладку Maven: Maven -> Lifecycle -> application -> package);
+3. Выполнить команду в терминале:
+```shell
+   docker-compose --project-name credentials --file docker-compose.yml up
+```
+
+## Локальный запуск без Docker
+
+1. Прописать url, username и password для базы данных в переменных окружения среды разработки;
+2. Там же выбрать локальный профиль при необходимости;
+3. Подключиться к базе данных в среде разработки.
+
 ## Управление
 
 После запуска программы выполните переход по ссылке: [Swagger](http://localhost:8081/swagger-ui/index.html#/)
 
+Тестовые сценарии для Swagger доступны в папке [swaggertests](src/main/resources/swaggertests) 
+
+## Ввод новых приложений
+
+1. Ознакомьтесь с правилами, изложенными в файле [application.yaml](src/main/resources/application.yaml)
+2. При тестировании в Swagger, пожалуйста, соблюдайте те же требования к названию нового приложения
