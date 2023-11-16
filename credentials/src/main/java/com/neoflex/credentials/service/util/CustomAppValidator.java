@@ -46,48 +46,48 @@ public class CustomAppValidator {
 
     private void validateByFields(ClientDto clientDto, List<String> fields) {
         if (fields.contains(CLIENT_BANK_ID)) {
-            log.info("Check client bank id = {}", clientDto.bankId());
+            log.info("Check client bank id = [{}]", clientDto.bankId());
             validateNoStringField(clientDto.bankId());
         }
         if (fields.contains(GlobalVariables.CLIENT_LASTNAME)) {
-            log.info("Check client lastname = {}", clientDto.lastname());
+            log.info("Check client lastname = [{}]", clientDto.lastname());
             validateStringField(clientDto.lastname());
         }
         if (fields.contains(GlobalVariables.CLIENT_FIRSTNAME)) {
-            log.info("Check client firstname = {}", clientDto.firstname());
+            log.info("Check client firstname = [{}]", clientDto.firstname());
             validateStringField(clientDto.firstname());
         }
         if (fields.contains(GlobalVariables.CLIENT_MIDDLE_NAME)) {
-            log.info("Check client middle name = {}", clientDto.middleName());
+            log.info("Check client middle name = [{}]", clientDto.middleName());
             validateStringField(clientDto.middleName());
         }
         if (fields.contains(CLIENT_BIRTH_DATE)) {
-            log.info("Check client birth date = {}", clientDto.birthDate());
+            log.info("Check client birth date = [{}]", clientDto.birthDate());
             validateNoStringField(clientDto.birthDate());
         }
         if (fields.contains(CLIENT_PASSPORT_NUMBER)) {
-            log.info("Check client passport number = {}", clientDto.passportNumber());
+            log.info("Check client passport number = [{}]", clientDto.passportNumber());
             validateStringField(clientDto.passportNumber());
         }
         if (fields.contains(CLIENT_BIRTH_PLACE)) {
-            log.info("Check client birth place = {}", clientDto.birthPlace());
+            log.info("Check client birth place = [{}]", clientDto.birthPlace());
             validateStringField(clientDto.birthPlace());
         }
         if (fields.contains(GlobalVariables.CLIENT_PHONE_NUMBER)) {
-            log.info("Check client phone number = {}", clientDto.phoneNumber());
+            log.info("Check client phone number = [{}]", clientDto.phoneNumber());
             validateStringField(clientDto.phoneNumber());
         }
         if (fields.contains(GlobalVariables.CLIENT_EMAIL)) {
-            log.info("Check client email = {}", clientDto.email());
+            log.info("Check client email = [{}]", clientDto.email());
             validateStringField(clientDto.email());
         }
         if (fields.contains(CLIENT_REGISTRATION_ADDRESS)) {
-            log.info("Check client registration address = {}", clientDto.registrationAddress());
+            log.info("Check client registration address = [{}]", clientDto.registrationAddress());
             validateNoStringField(clientDto.registrationAddress());
             CheckAddressUtil.checkAddress(clientDto.registrationAddress());
         }
         if (fields.contains(CLIENT_RESIDENTIAL_ADDRESS)) {
-            log.info("Check client residential address = {}", clientDto.residentialAddress());
+            log.info("Check client residential address = [{}]", clientDto.residentialAddress());
             validateNoStringField(clientDto.residentialAddress());
             CheckAddressUtil.checkAddress(clientDto.residentialAddress());
         }

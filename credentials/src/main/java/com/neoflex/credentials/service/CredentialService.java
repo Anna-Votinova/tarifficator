@@ -31,7 +31,7 @@ public class CredentialService {
     private final CustomAppValidator customAppValidator;
 
     public ClientDto createClient(String applicationType, ClientDto clientDto) {
-        checkApplicationTypeExists(applicationType);
+        checkApplicationTypeNotBlank(applicationType);
         validateCredentials(applicationType, clientDto);
         Client client = ClientMapper.toClient(clientDto);
 
@@ -58,6 +58,7 @@ public class CredentialService {
             log.info("Clients with received parameters not found");
             return Collections.emptyList();
         }
+        log.info("Received clients {}", receivedClients.size());
         return ClientMapper.mapToClients(receivedClients);
     }
 
@@ -96,8 +97,8 @@ public class CredentialService {
         return criteria;
     }
 
-    private void checkApplicationTypeExists(String applicationType) {
-        log.info("Check application type {} on emptiness", applicationType);
+    private void checkApplicationTypeNotBlank(String applicationType) {
+        log.info("Check application type [{}] on emptiness", applicationType);
         if (applicationType.isBlank()) {
             throw new ValidationException("Название приложения должно быть указано");
         }

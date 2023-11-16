@@ -1,10 +1,12 @@
 package com.neoflex.credentials.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 import java.time.LocalDate;
 
 @Schema(description = "Клиент")
+@Builder
 public record ClientDto(
         @Schema(description = "Идентификатор клиента", example = "1")
         Long id,
