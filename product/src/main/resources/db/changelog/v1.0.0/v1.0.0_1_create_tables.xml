@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-product" author="ponomareva">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="product"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="product">
+            <column name="id" type="UUID" remarks="Идентификатор продукта">
+                <constraints primaryKey="true" primaryKeyName="pk_product_id" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(500)" remarks="Название продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_type" type="VARCHAR(100)" remarks="Тип продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="DATE" remarks="Дата начала действия продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="DATE" remarks="Дата окончания действия продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT" remarks="Описание продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tariff" type="JSONB" remarks="Тариф на продукт"/>
+            <column name="author_id" type="BIGINT" remarks="Идентификатор создателя продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" remarks="Номер версии продукта"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-revision-info" author="ponomareva">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="revision_info"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="revision_info">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="Идентификатор ревизии">
+                <constraints primaryKey="true" primaryKeyName="pk_revision_info_id" nullable="false"/>
+            </column>
+            <column name="create_date" type="BIGINT" remarks="Дата создания ревизии"/>
+            <column name="user" type="VARCHAR(250)" remarks="Автор новой версии продукта"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-product-audit" author="ponomareva">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="product_audit"/>
+            </not>
+            <and>
+                <tableExists tableName="product"/>
+            </and>
+            <and>
+                <tableExists tableName="revision_info"/>
+            </and>
+        </preConditions>
+
+        <createTable tableName="product_audit">
+            <column name="id" type="UUID" remarks="Идентификатор продукта">
+                <constraints primaryKey="true" primaryKeyName="pk_product_audit_id" nullable="false"/>
+            </column>
+            <column name="revision_id" type="BIGINT" autoIncrement="true" remarks="Идентификатор ревизии">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_product_audit_id"
+                             nullable="false"
+                             foreignKeyName="fk_revision_info"
+                             references="revision_info(id)"/>
+            </column>
+            <column name="name" type="VARCHAR(500)" remarks="Название продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_type" type="VARCHAR(100)" remarks="Тип продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="DATE" remarks="Дата начала действия продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="DATE" remarks="Дата окончания действия продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT" remarks="Описание продукта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tariff" type="JSONB" remarks="Тариф на продукт"/>
+            <column name="author_id" type="BIGINT" remarks="Идентификатор юзера">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" remarks="Номер версии продукта"/>
+            <column name="revision_type" type="SMALLINT" remarks="Тип ревизии"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
