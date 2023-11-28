@@ -4,10 +4,10 @@ import org.hibernate.envers.RevisionListener;
 
 public class UserRevisionListener implements RevisionListener {
 
-    private static final String USER = "not implemented yet";
+    private static final String USER = "ADMIN";
     @Override
     public void newRevision(Object revisionEntity) {
         Revision revision = (Revision) revisionEntity;
-        revision.setUser(USER);
+        revision.setUsername(USER);
     }
 }

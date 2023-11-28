@@ -52,8 +52,8 @@
             <column name="id" type="BIGINT" autoIncrement="true" remarks="Идентификатор ревизии">
                 <constraints primaryKey="true" primaryKeyName="pk_revision_info_id" nullable="false"/>
             </column>
-            <column name="create_date" type="BIGINT" remarks="Дата создания ревизии"/>
-            <column name="user" type="VARCHAR(250)" remarks="Автор новой версии продукта"/>
+            <column name="revision_timestamp" type="BIGINT" remarks="Дата создания ревизии"/>
+            <column name="revision_author" type="VARCHAR(250)" remarks="Автор новой версии продукта"/>
         </createTable>
     </changeSet>
 
@@ -82,25 +82,13 @@
                              foreignKeyName="fk_revision_info"
                              references="revision_info(id)"/>
             </column>
-            <column name="name" type="VARCHAR(500)" remarks="Название продукта">
-                <constraints nullable="false"/>
-            </column>
-            <column name="product_type" type="VARCHAR(100)" remarks="Тип продукта">
-                <constraints nullable="false"/>
-            </column>
-            <column name="start_date" type="DATE" remarks="Дата начала действия продукта">
-                <constraints nullable="false"/>
-            </column>
-            <column name="end_date" type="DATE" remarks="Дата окончания действия продукта">
-                <constraints nullable="false"/>
-            </column>
-            <column name="description" type="TEXT" remarks="Описание продукта">
-                <constraints nullable="false"/>
-            </column>
+            <column name="name" type="VARCHAR(500)" remarks="Название продукта"/>
+            <column name="product_type" type="VARCHAR(100)" remarks="Тип продукта"/>
+            <column name="start_date" type="DATE" remarks="Дата начала действия продукта"/>
+            <column name="end_date" type="DATE" remarks="Дата окончания действия продукта"/>
+            <column name="description" type="TEXT" remarks="Описание продукта"/>
             <column name="tariff" type="JSONB" remarks="Тариф на продукт"/>
-            <column name="author_id" type="BIGINT" remarks="Идентификатор юзера">
-                <constraints nullable="false"/>
-            </column>
+            <column name="author_id" type="BIGINT" remarks="Идентификатор юзера"/>
             <column name="version" type="BIGINT" remarks="Номер версии продукта"/>
             <column name="revision_type" type="SMALLINT" remarks="Тип ревизии"/>
         </createTable>

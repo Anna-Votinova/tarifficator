@@ -3,6 +3,8 @@ package com.neoflex.product.controller.advice;
 import com.neoflex.product.dto.error.ErrorResponse;
 import com.neoflex.product.dto.error.ValidationErrorResponse;
 import com.neoflex.product.dto.error.Violation;
+import com.neoflex.product.exception.ProductNotFoundException;
+import com.neoflex.product.exception.RevisionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,6 +25,20 @@ public class GlobalControllerAdvice {
     public ErrorResponse handleThrowable(Throwable e) {
         log.error(e.getMessage(), e);
         return new ErrorResponse("Непредвиденная ошибка: ", e.getMessage());
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleProductNotFoundException(ProductNotFoundException e) {
+        log.error(e.getMessage(), e);
+        return new ErrorResponse("Ошибка введенных данных: ", e.getMessage());
+    }
+
+    @ExceptionHandler(RevisionException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleRevisionException(RevisionException e) {
+        log.error(e.getMessage(), e);
+        return new ErrorResponse("Ошибка при обращении в базу данных: ", e.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

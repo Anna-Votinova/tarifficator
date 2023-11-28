@@ -4,14 +4,10 @@ import com.neoflex.product.dto.enums.ProductType;
 import com.neoflex.product.dto.TariffDto;
 import com.neoflex.product.entity.listeners.OperationProductListener;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -21,13 +17,14 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
+@Builder
 @Entity
 @Audited
-@AuditTable("product_audit")
 @Table(name = "product", schema = "public")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @EntityListeners(OperationProductListener.class)
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id
@@ -59,6 +56,7 @@ public class Product {
     private Long authorId;
 
     @Version
+    @Setter(AccessLevel.PRIVATE)
     private long version;
 
     @Override

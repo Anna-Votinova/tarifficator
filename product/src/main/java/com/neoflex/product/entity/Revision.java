@@ -24,10 +24,11 @@ public class Revision {
     private Long id;
 
     @RevisionTimestamp
-    @Column(name = "create_date")
-    private Long createDate;
+    @Column(name = "revision_timestamp")
+    private Long timestamp;
 
-    private String user;
+    @Column(name = "revision_author")
+    private String username;
 
     @Override
     public boolean equals(Object o) {

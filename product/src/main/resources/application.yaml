@@ -12,6 +12,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
         ddl-auto: validate
-        envers:
-          do_not_audit_optimistic_locking_field: false
-          revision_type_field_name: revision_type
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: _audit
+            revision_field_name: revision_id
+            revision_type_field_name: revision_type
+            do_not_audit_optimistic_locking_field: false

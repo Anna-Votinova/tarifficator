@@ -14,7 +14,7 @@ public class OperationProductListener {
 
     @PrePersist
     public void prePersist(Product product) {
-        log.info("Try to save product with id [{}]", product.getId());
+        log.info("Try to save product {}", product);
     }
 
     @PostPersist
