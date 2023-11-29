@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-tariff" author="ponomareva">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="tariff"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="tariff">
+            <column name="id" type="UUID" remarks="Идентификатор тарифа">
+                <constraints primaryKey="true" primaryKeyName="pk_tariff_id" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(500)" remarks="Название тарифа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="DATE" remarks="Дата начала действия тарифа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="DATE" remarks="Дата окончания действия тарифа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT" remarks="Описание тарифа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rate" type="DOUBLE PRECISION" remarks="Стоимость тарифа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="BIGINT" remarks="Идентификатор создателя тарифа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" remarks="Номер версии тарифа"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-revision-info" author="ponomareva">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="revision_info"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="revision_info">
+            <column name="id" type="BIGINT" autoIncrement="true" remarks="Идентификатор ревизии">
+                <constraints primaryKey="true" primaryKeyName="pk_revision_info_id" nullable="false"/>
+            </column>
+            <column name="revision_timestamp" type="BIGINT" remarks="Дата создания ревизии"/>
+            <column name="revision_author" type="VARCHAR(250)" remarks="Автор ревизии продукта"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-tariff-audit" author="ponomareva">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="tariff_audit"/>
+            </not>
+            <and>
+                <tableExists tableName="tariff"/>
+            </and>
+            <and>
+                <tableExists tableName="revision_info"/>
+            </and>
+        </preConditions>
+
+        <createTable tableName="tariff_audit">
+            <column name="id" type="UUID" remarks="Идентификатор тарифа">
+                <constraints primaryKey="true" primaryKeyName="pk_tariff_audit_id" nullable="false"/>
+            </column>
+            <column name="revision_id" type="BIGINT" autoIncrement="true" remarks="Идентификатор ревизии">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_tariff_audit_id"
+                             nullable="false"
+                             foreignKeyName="fk_revision_info"
+                             references="revision_info(id)"/>
+            </column>
+            <column name="name" type="VARCHAR(500)" remarks="Название продукта"/>
+            <column name="start_date" type="DATE" remarks="Дата начала действия продукта"/>
+            <column name="end_date" type="DATE" remarks="Дата окончания действия продукта"/>
+            <column name="description" type="TEXT" remarks="Описание продукта"/>
+            <column name="rate" type="DOUBLE PRECISION" remarks="Стоимость тарифа"/>
+            <column name="author_id" type="BIGINT" remarks="Идентификатор юзера"/>
+            <column name="version" type="BIGINT" remarks="Номер версии продукта"/>
+            <column name="revision_type" type="SMALLINT" remarks="Тип ревизии"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
