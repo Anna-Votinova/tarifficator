@@ -42,7 +42,7 @@ public class TariffCreateDto {
     @Schema(description = "Стоимость тарифа", example = "2000.00")
     private Double rate;
 
-    @NotBlank
+    @NotNull
     @Schema(description = "Идентификатор создателя тарифа", example = "1")
     private Long author;
 }

@@ -19,3 +19,8 @@ spring:
             revision_field_name: revision_id
             revision_type_field_name: revision_type
             do_not_audit_optimistic_locking_field: false
+
+product:
+  kafka:
+    bootstrap-address: ${KAFKA_BOOTSTRAP_SERVERS}
+    install-tariff-topic: install-tariff
