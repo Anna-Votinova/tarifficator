@@ -27,9 +27,12 @@ public class TariffDto {
     @Schema(description = "Описание тарифа", example = "Специальный тариф на золотые карты на 2 года")
     private String description;
 
-    @Schema(description = "Идентификатор продукта", example = "123e4567-e89b-42d3-a456-556642440000")
-    private UUID productId;
-
     @Schema(description = "Стоимость тарифа", example = "2000.00")
     private Double rate;
+
+    @Schema(description = "Автор тарифа", example = "ADMIN")
+    private Long author;
+
+    @Schema(description = "Версия тарифа", example = "0")
+    private long version;
 }

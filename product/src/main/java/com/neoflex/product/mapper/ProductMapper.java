@@ -16,7 +16,6 @@ public final class ProductMapper {
      * Works with the DTO without info about the tariff, id and version. To make use info about the tariff
      * create a new mapper method
      * </p>
-     *
      * @param productDto - info about a product without tariff
      * @return a new entity Product
      */

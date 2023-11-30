@@ -2,6 +2,11 @@ server:
   port: 8082
 
 spring:
+  kafka:
+    consumer:
+      group-id: tariff_service
+      bootstrap-servers: ${KAFKA_SERVER}
+      auto-offset-reset: earliest
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${DB_URL}
@@ -19,3 +24,14 @@ spring:
             revision_field_name: revision_id
             revision_type_field_name: revision_type
             do_not_audit_optimistic_locking_field: false
+
+application:
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    transport-protocol: smtp
+    smtp-auth-enabled: true
+    smtp-starttls-enabled: true
+    debug-enabled: true

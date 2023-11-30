@@ -1,21 +1,36 @@
 package com.neoflex.product.service;
 
-import com.neoflex.product.dto.CreateProductDto;
-import com.neoflex.product.dto.ProductDto;
-import com.neoflex.product.dto.UpdateProductDto;
+import com.neoflex.product.dto.*;
 import com.neoflex.product.entity.Product;
 import com.neoflex.product.exception.ProductNotFoundException;
+import com.neoflex.product.integration.mail.EmailSender;
 import com.neoflex.product.mapper.ProductMapper;
+import com.neoflex.product.mapper.TariffMapper;
 import com.neoflex.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.OptimisticLockException;
+import java.util.Objects;
 import java.util.UUID;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
+    private static final String HARDCODED_EMAIL = "anyvotinova@yandex.ru";
+    private static final String THEME = "Install tariff";
+    private static final String ERROR_MESSAGE_TEXT = "Installation of a tariff failed. Try to install a tariff once " +
+            "again. Product id: ";
+    private static final String SENDING_EMAIL_SUCCESS_LOG_MESSAGE = "Email product with id {} and tariff {} has been " +
+            "successfully delivered";
+    private static final String SENDING_EMAIL_ERROR_LOG_MESSAGE = "Error with sending product with id {} and tariff {} " +
+            "has happened. The reason is: ";
+
     private final ProductRepository productRepository;
+    private final EmailSender emailSender;
 
     public ProductDto create(CreateProductDto productDto) {
         Product product = ProductMapper.toShortProduct(productDto);
@@ -40,8 +55,54 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
+    public void installTariff(TariffKafkaMessage tariffKafkaMessage) {
+        log.info("Try to install tariff with id {} to product with id {}",
+                tariffKafkaMessage.getId(), tariffKafkaMessage.getProductId());
+        Product product = findProductById(tariffKafkaMessage.getProductId());
+        TariffDto tariffDto = TariffMapper.toTariffDto(tariffKafkaMessage);
+
+        product.setTariffDto(tariffDto);
+        Product savedProduct = saveProduct(product);
+        if (Objects.isNull(savedProduct)) {
+            sendFailedResultMessage(tariffKafkaMessage.getId(), tariffKafkaMessage.getProductId());
+        } else {
+            sendSuccessfulResultMessage(savedProduct);
+        }
+    }
+
     private Product findProductById(UUID productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Продукт с id " + productId + " не существует"));
+    }
+
+    private Product saveProduct(Product product) {
+        Product savedProduct = new Product();
+        log.info("Try to save product with id {} or catch Optimistic lock exception", product.getId());
+        try {
+            savedProduct = productRepository.save(product);
+        } catch (OptimisticLockException e) {
+            log.error("Optimistic lock exception happened, while trying to save product with id {}", product.getId(), e);
+        }
+        return savedProduct;
+    }
+    private void sendSuccessfulResultMessage(Product product) {
+        log.info("Try to send message with product id {} and tariff {}", product.getId(), product.getTariffDto());
+        ProductDto productDto = ProductMapper.toProductDto(product);
+        try {
+            emailSender.sendComplexMessage(HARDCODED_EMAIL, THEME, productDto);
+            log.info(SENDING_EMAIL_SUCCESS_LOG_MESSAGE, product.getId(), product.getTariffDto());
+        } catch (Exception e) {
+            log.error(SENDING_EMAIL_ERROR_LOG_MESSAGE, product.getId(), product.getTariffDto(), e);
+        }
+    }
+
+    private void sendFailedResultMessage(UUID tariffId, UUID productId) {
+        log.info("Try to send message for product id {} and tariff id {}", productId, tariffId);
+        try {
+            emailSender.sendSimpleMessage(HARDCODED_EMAIL, THEME, ERROR_MESSAGE_TEXT + productId);
+            log.info(SENDING_EMAIL_SUCCESS_LOG_MESSAGE, productId, tariffId);
+        } catch (Exception e) {
+            log.error(SENDING_EMAIL_ERROR_LOG_MESSAGE, productId, tariffId, e);
+        }
     }
 }

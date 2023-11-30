@@ -11,7 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,7 +30,7 @@ public class AuditController {
     @Operation(summary = "Получение текущей версии продукта",
             description = "Возвращает текущую версию продукта по его идентификатору")
     @GetMapping("/find/actual/{productId}")
-    public ProductDto getActualProductVersion(@Positive @PathVariable @Parameter(description = "Идентификатор продукта",
+    public ProductDto getActualProductVersion(@PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId) {
         log.info("Got the request for retrieving current version of the product with id {}", productId);
         return auditService.getActualVersion(productId);
@@ -42,7 +41,7 @@ public class AuditController {
                     "возвращается")
     @GetMapping("/find/previous/{productId}")
     public List<ProductDto> getPreviousProductVersions(
-            @Positive @PathVariable @Parameter(description = "Идентификатор продукта",
+            @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId) {
         log.info("Got the request for retrieving previous versions of the product with id {}", productId);
         return auditService.getPreviousVersions(productId);
@@ -57,7 +56,7 @@ public class AuditController {
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @Parameter(description = "Дата окончания периода", example = "2029-01-12")
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
-            @Positive @PathVariable @Parameter(description = "Идентификатор продукта",
+            @PathVariable @Parameter(description = "Идентификатор продукта",
                     example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId) {
         log.info("Got the request for retrieving versions of the product with id {} by period with start date {} " +
                 "and end date {}", productId, fromDate, toDate);
@@ -69,7 +68,7 @@ public class AuditController {
                     "значениями. Номер версии при этом возрастает.")
     @PutMapping("/revert/{productId}")
     public ProductDto revertProductVersion(
-            @Positive @PathVariable @Parameter(description = "Идентификатор продукта",
+            @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId,
             @PositiveOrZero @Parameter(description = "Версия продукта", example = "1") @RequestParam long version) {
         log.info("Got the request for changing existing version of the product with id {} on one of the previous " +

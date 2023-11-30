@@ -48,6 +48,30 @@ services:
     env_file:
       - secret.env
 
+  product-db:
+    image: postgres:16-alpine
+    container_name: product-db
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=product
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  product:
+    build: product
+    container_name: product
+    ports:
+      - "8082:8082"
+    depends_on:
+      - broker
+      - product-db
+    environment:
+      - KAFKA_SERVER=broker:29092
+    env_file:
+      - secret-product.env
+      - secret-mail-product.env
+
   tariffs-db:
     image: postgres:16-alpine
     container_name: tariffs-db
