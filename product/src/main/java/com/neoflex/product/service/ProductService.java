@@ -32,12 +32,26 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final EmailSender emailSender;
 
+    /**
+     * <p> Creates a product without a tariff
+     * </p>
+     * @param productDto - client's info about new product
+     * @return a product with info about its version
+     */
     public ProductDto create(CreateProductDto productDto) {
         Product product = ProductMapper.toShortProduct(productDto);
         productRepository.save(product);
         return ProductMapper.toProductDto(product);
     }
 
+    /**
+     * <p> Updates product fields except a tariff, an author and a version
+     * </p>
+     * @param productId - an id of a product
+     * @param newProduct - info about a product to update existing entity
+     * @return updated product
+     * @throws com.neoflex.product.exception.ProductNotFoundException if the product with the given id does not exist
+     */
     public ProductDto update(UUID productId, UpdateProductDto newProduct) {
         Product oldProduct = findProductById(productId);
 
@@ -51,10 +65,20 @@ public class ProductService {
         return ProductMapper.toProductDto(oldProduct);
     }
 
+    /**
+     * <p> Removes a product by id
+     * </p>
+     * @param productId - a product id
+     */
     public void remove(UUID productId) {
         productRepository.deleteById(productId);
     }
 
+    /**
+     * <p> Receives message from Kafka, installs a tariff to a product and sends a message to the client's email
+     * </p>
+     * @param tariffKafkaMessage - a tariff for installation
+     */
     public void installTariff(TariffKafkaMessage tariffKafkaMessage) {
         log.info("Try to install tariff with id {} to product with id {}",
                 tariffKafkaMessage.getId(), tariffKafkaMessage.getProductId());
@@ -85,6 +109,7 @@ public class ProductService {
         }
         return savedProduct;
     }
+
     private void sendSuccessfulResultMessage(Product product) {
         log.info("Try to send message with product id {} and tariff {}", product.getId(), product.getTariffDto());
         ProductDto productDto = ProductMapper.toProductDto(product);

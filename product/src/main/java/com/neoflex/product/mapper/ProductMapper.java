@@ -11,14 +11,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProductMapper {
 
-    /**
-     * <p>
-     * Works with the DTO without info about the tariff, id and version. To make use info about the tariff
-     * create a new mapper method
-     * </p>
-     * @param productDto - info about a product without tariff
-     * @return a new entity Product
-     */
     public static Product toShortProduct(CreateProductDto productDto) {
         return Product.builder()
                 .name(productDto.getName())

@@ -33,6 +33,12 @@ public class AuditService {
     private final AuditReader auditReader;
     private final EntityManager entityManager;
 
+    /**
+     * <p> Returns actual version of a product from audit tables
+     * </p>
+     * @param productId - a product id
+     * @return the product with info about its author and version
+     */
     @Transactional(readOnly = true)
     public ProductDto getActualVersion(UUID productId) {
         Product actualProduct = getRevision(productId).getEntity();
@@ -40,6 +46,13 @@ public class AuditService {
         return ProductMapper.toProductDto(actualProduct);
     }
 
+    /**
+     * <p> Returns a list of previous product versions. The latest version is not taken into account
+     * </p>
+     * @param productId - a product id
+     * @return a list of previous product versions
+     * @throws com.neoflex.product.exception.RevisionException if the revision for the product is not found
+     */
     @Transactional(readOnly = true)
     public List<ProductDto> getPreviousVersions(UUID productId) {
         Product actualProduct = getRevision(productId).getEntity();
@@ -52,6 +65,15 @@ public class AuditService {
         return ProductMapper.toListProductDto(previousProducts);
     }
 
+    /**
+     * <p> Returns a list of product versions chosen by a period given by a client
+     * </p>
+     * @param fromDate - a start date for searching audit information
+     * @param toDate - an end date for searching audit information
+     * @param productId - a product id
+     * @return - list of product versions
+     * @throws com.neoflex.product.exception.ValidationException if the start date is after the end date
+     */
     @Transactional(readOnly = true)
     public List<ProductDto> getVersionsByPeriod(LocalDate fromDate, LocalDate toDate, UUID productId) {
         if (CheckDateUtil.isDateBefore(toDate, fromDate)) {
@@ -70,6 +92,16 @@ public class AuditService {
         return ProductMapper.toListProductDto(products);
     }
 
+    /**
+     * <p> Changes a product version on given one. Note: the version of the product is not changed because of
+     * annotation @Version. Instead of this the version increase on one point, but product has another information
+     * that client needs
+     * </p>
+     * @see <a href="https://stackoverflow.com/questions/2572566/java-jpa-version-annotation">Annotation Version</a>
+     * @param productId - a product id
+     * @param version - a version of the product to change to
+     * @return the product with a proper version
+     */
     @Transactional
     public ProductDto revertVersion(UUID productId, long version) {
         Revision<Long,Product> lastRevision = getRevision(productId);
@@ -106,6 +138,7 @@ public class AuditService {
         log.debug("Long value of timestamp date {} equals {}", timestamp, longDate);
         return longDate;
     }
+
     private Product updateProduct(Product updatingProduct, Product previousProductVersion) {
 
         updatingProduct.setName(previousProductVersion.getName());
