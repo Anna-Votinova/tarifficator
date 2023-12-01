@@ -7,6 +7,7 @@ import com.neoflex.tariffs.entity.Tariff;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -47,5 +48,9 @@ public final class TariffMapper {
                 .author(tariff.getAuthor())
                 .version(tariff.getVersion())
                 .build();
+    }
+
+    public static List<TariffDto> mapToTariffDtoList(List<Tariff> tariffList) {
+        return tariffList.stream().map(TariffMapper::toTariffDto).toList();
     }
 }
