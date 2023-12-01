@@ -55,7 +55,7 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(QueryOperatorNotSupportedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
     public ErrorResponse handleCriteriaOperatorNotSupportedException(QueryOperatorNotSupportedException e) {
         log.error(e.getMessage(), e);
         return new ErrorResponse("Ошибка валидации оператора запроса: ", e.getMessage());

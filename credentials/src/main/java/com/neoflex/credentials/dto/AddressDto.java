@@ -4,7 +4,7 @@ import com.neoflex.credentials.dto.enums.AddressType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
-@Schema(description = "Адрес регистрации или место жительтсва клиента")
+@Schema(description = "Адрес регистрации или место жительства клиента")
 @Builder
 public record AddressDto(
         @Schema(description = "Идентификатор адреса", example = "1")
