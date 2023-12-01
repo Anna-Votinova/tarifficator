@@ -35,8 +35,8 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_DB=credentials
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+    env_file:
+      - secret-credentials.env
 
   credentials:
     build: credentials
@@ -46,7 +46,7 @@ services:
     depends_on:
       - credentials-db
     env_file:
-      - secret.env
+      - secret-credentials.env
 
   product-db:
     image: postgres:16-alpine
@@ -55,8 +55,8 @@ services:
       - "5433:5432"
     environment:
       - POSTGRES_DB=product
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+    env_file:
+      - secret-product.env
 
   product:
     build: product
@@ -79,8 +79,8 @@ services:
       - "5434:5432"
     environment:
       - POSTGRES_DB=tariffs
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+    env_file:
+      - secret-tariff.env
 
   tariffs:
     build: tariffs
@@ -94,3 +94,13 @@ services:
       - KAFKA_BOOTSTRAP_SERVERS=broker:29092
     env_file:
       - secret-tariff.env
+
+  backend:
+    build: backend
+    container_name: backend
+    ports:
+      - "8084:8084"
+    environment:
+      - CREDENTIALS_URL=http://credentials:8081/credentials
+      - PRODUCT_URL=http://product:8082/product
+      - TARIFFS_URL=http://tariffs:8083/tariffs
