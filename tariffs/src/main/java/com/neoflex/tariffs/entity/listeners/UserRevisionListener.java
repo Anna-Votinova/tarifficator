@@ -1,4 +1,5 @@
 package com.neoflex.tariffs.entity.listeners;
+
 import com.neoflex.tariffs.entity.Revision;
 import org.hibernate.envers.RevisionListener;
 

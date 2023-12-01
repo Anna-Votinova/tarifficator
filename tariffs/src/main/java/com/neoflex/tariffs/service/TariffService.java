@@ -29,12 +29,26 @@ public class TariffService {
     private final TariffMessageProducer tariffMessageProducer;
     private final ProductKafkaConfig productKafkaConfig;
 
+    /**
+     * <p> Creates tariff
+     * </p>
+     * @param tariffCreateDto - tariff info to save
+     * @return a new tariff with info about itd author and version
+     */
     public TariffDto createTariff(TariffCreateDto tariffCreateDto) {
         Tariff newTariff = TariffMapper.toTariff(tariffCreateDto);
         Tariff createdTariff = tariffRepository.save(newTariff);
         return TariffMapper.toTariffDto(createdTariff);
     }
 
+    /**
+     * <p> Updates tariff fields except an author and a version
+     * </p>
+     * @param tariffId - a tariff id
+     * @param tariffUpdateDto - info about a tariff to update existing entity
+     * @return an updated tariff
+     * @throws com.neoflex.tariffs.exception.TariffNotFoundException if the tariff with the given id does not exist
+     */
     public TariffDto updateTariff(UUID tariffId, TariffUpdateDto tariffUpdateDto) {
         Tariff exixtingTariff = findTariff(tariffId);
 
@@ -48,15 +62,35 @@ public class TariffService {
         return TariffMapper.toTariffDto(exixtingTariff);
     }
 
+    /**
+     * <p> Removes a tariff by id
+     * </p>
+     * @param tariffId - a tariff id
+     */
     public void removeTariff(UUID tariffId) {
         tariffRepository.deleteById(tariffId);
     }
 
+    /**
+     * <p> Returns a tariff by id
+     * </p>
+     * @param tariffId - a tariff id
+     * @throws com.neoflex.tariffs.exception.TariffNotFoundException if the tariff with the given id does not exist
+     */
     public TariffDto getTariff(UUID tariffId) {
         Tariff tariff = findTariff(tariffId);
         return TariffMapper.toTariffDto(tariff);
     }
 
+    /**
+     * <p> Returns a list of tariffs by given parameters
+     * </p>
+     * @param searchPhrase - text for searching in the name or in the description of a tariff. Optional.
+     * @param fromPage - the start page for the searching. Default value: 0.
+     * @param toPage - the finish page for the searching. Default value: 10.
+     * @return the list of tariffs
+     * @throws com.neoflex.tariffs.exception.ValidationException if the start page is greater than the finish page
+     */
     @Transactional(readOnly = true)
     public List<TariffDto> getAll(String searchPhrase, int fromPage, int toPage) {
         checkPages(fromPage, toPage);
@@ -78,6 +112,13 @@ public class TariffService {
         return TariffMapper.mapToTariffDtoList(tariffs);
     }
 
+    /**
+     * <p> Installs a tariff to a product through Kafka and Product Service
+     * </p>
+     * @param productId - a product id
+     * @param tariffId - a tariff id
+     * @throws com.neoflex.tariffs.exception.TariffNotFoundException if the tariff with the given id does not exist
+     */
     @Transactional
     public void installTariff(UUID productId, UUID tariffId) {
         Tariff tariff = findTariff(tariffId);
