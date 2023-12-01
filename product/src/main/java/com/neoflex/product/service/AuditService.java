@@ -3,9 +3,11 @@ package com.neoflex.product.service;
 import com.neoflex.product.dto.ProductDto;
 import com.neoflex.product.entity.Product;
 import com.neoflex.product.exception.RevisionException;
+import com.neoflex.product.exception.ValidationException;
 import com.neoflex.product.mapper.ProductMapper;
 import com.neoflex.product.repository.ProductRepository;
 import com.neoflex.product.repository.ProductRevisionRepository;
+import com.neoflex.product.service.util.CheckDateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.envers.AuditReader;
@@ -52,6 +54,10 @@ public class AuditService {
 
     @Transactional(readOnly = true)
     public List<ProductDto> getVersionsByPeriod(LocalDate fromDate, LocalDate toDate, UUID productId) {
+        if (CheckDateUtil.isDateBefore(toDate, fromDate)) {
+            throw new ValidationException("Дата окончания поиска не должна быть раньше даты начала поиска");
+        }
+
         Long periodStart = convertTime(fromDate);
         Long periodEnd = convertTime(toDate);
 

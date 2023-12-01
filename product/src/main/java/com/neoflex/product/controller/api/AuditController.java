@@ -20,7 +20,7 @@ import java.util.UUID;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/audit")
+@RequestMapping(path = "/product/audit")
 @Tag(name = "Audit Controller",
         description = "Предоставляет версии продукта")
 public class AuditController {
