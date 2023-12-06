@@ -22,6 +22,7 @@ public interface AuditProductClient {
 
     @GetMapping("/audit/find/previous/{productId}")
     List<ProductDto> getPreviousProductVersions(@PathVariable UUID productId);
+
     @GetMapping("/audit/find/period/{productId}")
     List<ProductDto> getProductVersionsByPeriod(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                                 @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,

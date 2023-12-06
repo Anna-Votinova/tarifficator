@@ -12,9 +12,8 @@ import java.util.UUID;
 
 public interface TariffRepository extends JpaRepository<Tariff, UUID>, RevisionRepository<Tariff, UUID, Long> {
 
-    @Query("select t from Tariff t where lower(t.name) like lower(concat('%', :name,'%')) " +
-            "or lower(t.description) like lower(concat('%', :description,'%'))")
-    Page<Tariff> findByNameOrDescription(
-            @Param("name") String name, @Param("description") String description, Pageable pageable);
+    @Query("select t from Tariff t where lower(t.name) like lower(concat('%', :phrase,'%')) " +
+            "or lower(t.description) like lower(concat('%', :phrase,'%'))")
+    Page<Tariff> findByNameOrDescription(@Param("phrase") String searchPhrase, Pageable pageable);
 
 }

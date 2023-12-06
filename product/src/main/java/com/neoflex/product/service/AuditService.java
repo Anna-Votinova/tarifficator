@@ -93,9 +93,9 @@ public class AuditService {
     }
 
     /**
-     * <p> Changes a product version on given one. Note: the version of the product is not changed because of
-     * annotation @Version. Instead of this the version increase on one point, but product has another information
-     * that client needs
+     * <p> Changes a product version on given one. Note: the version number of the product is not changed because of
+     * annotation @Version. Instead of this the version number increases on one point, but the product has another
+     * information that a client needs
      * </p>
      * @see <a href="https://stackoverflow.com/questions/2572566/java-jpa-version-annotation">Annotation Version</a>
      * @param productId - a product id

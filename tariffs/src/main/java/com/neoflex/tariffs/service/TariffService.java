@@ -101,7 +101,7 @@ public class TariffService {
             tariffs = tariffRepository.findAll(pageable).stream().toList();
         } else {
             tariffs = tariffRepository
-                    .findByNameOrDescription(searchPhrase, searchPhrase, pageable)
+                    .findByNameOrDescription(searchPhrase, pageable)
                     .stream().toList();
         }
         log.info("List size of tariffs equals {}", tariffs.size());
