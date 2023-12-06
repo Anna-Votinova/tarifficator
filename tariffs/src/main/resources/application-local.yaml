@@ -1,0 +1,9 @@
+KAFKA_BOOTSTRAP_SERVERS: localhost:9092
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        temp:
+          use_jdbc_metadata_defaults: false

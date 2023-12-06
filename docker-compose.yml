@@ -2,6 +2,32 @@ version: '4.25.1.0'
 
 services:
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  broker:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
   credentials-db:
     image: postgres:16-alpine
     container_name: credentials-db
@@ -9,8 +35,8 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_DB=credentials
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+    env_file:
+      - secret-credentials.env
 
   credentials:
     build: credentials
@@ -20,4 +46,61 @@ services:
     depends_on:
       - credentials-db
     env_file:
-      - secret.env
+      - secret-credentials.env
+
+  product-db:
+    image: postgres:16-alpine
+    container_name: product-db
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=product
+    env_file:
+      - secret-product.env
+
+  product:
+    build: product
+    container_name: product
+    ports:
+      - "8082:8082"
+    depends_on:
+      - broker
+      - product-db
+    environment:
+      - KAFKA_SERVER=broker:29092
+    env_file:
+      - secret-product.env
+      - secret-mail-product.env
+
+  tariffs-db:
+    image: postgres:16-alpine
+    container_name: tariffs-db
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_DB=tariffs
+    env_file:
+      - secret-tariff.env
+
+  tariffs:
+    build: tariffs
+    container_name: tariffs
+    ports:
+      - "8083:8083"
+    depends_on:
+      - broker
+      - tariffs-db
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=broker:29092
+    env_file:
+      - secret-tariff.env
+
+  backend:
+    build: backend
+    container_name: backend
+    ports:
+      - "8084:8084"
+    environment:
+      - CREDENTIALS_URL=http://credentials:8081/credentials
+      - PRODUCT_URL=http://product:8082/product
+      - TARIFFS_URL=http://tariffs:8083/tariffs

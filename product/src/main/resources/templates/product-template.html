@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h2 th:text="#{header}"></h2>
+<p>
+    <b th:text="#{productHeader}"></b> <br />
+</p>
+<p th:text="#{productName(${productName})}"></p>
+<p th:text="#{productType(${productType})}"></p>
+<p th:text="#{productStartDate(${productStartDate})}"></p>
+<p th:text="#{productEndDate(${productEndDate})}"></p>
+<p th:text="#{productDescription(${productDescription})}"></p>
+<p th:text="#{productAuthor(${productAuthor})}"></p>
+<p th:text="#{productVersion(${productVersion})}"></p>
+<p>
+    <b th:text="#{tariffHeader}"></b> <br />
+</p>
+<p th:text="#{tariffName(${tariffName})}"></p>
+<p th:text="#{tariffStartDate(${tariffStartDate})}"></p>
+<p th:text="#{tariffEndDate(${tariffEndDate})}"></p>
+<p th:text="#{tariffDescription(${tariffDescription})}"></p>
+<p th:text="#{tariffRate(${tariffRate})}"></p>
+<p th:text="#{tariffAuthor(${tariffAuthor})}"></p>
+<p th:text="#{tariffVersion(${tariffVersion})}"></p>
+</body>
+</html>

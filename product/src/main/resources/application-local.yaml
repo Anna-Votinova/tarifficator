@@ -1,0 +1,9 @@
+KAFKA_SERVER: localhost:9092
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        temp:
+          use_jdbc_metadata_defaults: false

@@ -1,0 +1,8 @@
+server:
+  port: 8084
+
+applications:
+  url:
+    credentials: ${CREDENTIALS_URL}
+    product: ${PRODUCT_URL}
+    tariffs: ${TARIFFS_URL}

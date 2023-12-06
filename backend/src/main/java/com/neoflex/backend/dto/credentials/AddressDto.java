@@ -1,30 +1,34 @@
-package com.neoflex.credentials.dto;
+package com.neoflex.backend.dto.credentials;
 
-import com.neoflex.credentials.dto.enums.AddressType;
+import com.neoflex.backend.dto.credentials.enums.AddressType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
+import lombok.Data;
 
-@Schema(description = "Адрес регистрации или место жительства клиента")
+
+@Data
 @Builder
-public record AddressDto(
+@Schema(description = "Адрес регистрации или место жительства клиента")
+public class AddressDto {
+
         @Schema(description = "Идентификатор адреса", example = "1")
-        Long id,
+        private Long id;
 
         @Schema(description = "Регион", example = "Voronezh region")
-        String region,
+        private String region;
 
         @Schema(description = "Город", example = "Voronezh")
-        String city,
+        private String city;
 
         @Schema(description = "Улица", example = "Лизюкова")
-        String street,
+        private String street;
 
         @Schema(description = "Номер дома с литерой, дробью, корпусом или строением", example = "104б")
-        String buildingNumber,
+        private String buildingNumber;
 
         @Schema(description = "Номер квартиры", example = "564")
-        String apartmentNumber,
+        private String apartmentNumber;
 
         @Schema(description = "Типа адреса", example = "REGISTRATION")
-        AddressType addressType
-) {}
+        private AddressType addressType;
+}
