@@ -1,7 +1,8 @@
 package com.neoflex.credentials.controller.api;
 
-import com.neoflex.credentials.dto.ClientDto;
+import com.neoflex.credentials.dto.ClientRequestDto;
 import com.neoflex.credentials.dto.ClientFieldsDto;
+import com.neoflex.credentials.dto.ClientResponseDto;
 import com.neoflex.credentials.service.CredentialService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,16 +32,16 @@ public class CredentialsController {
             description = "Создает учетные записи клиента на основе данных, пришедших из того или иного сервиса. " +
                     "Возможные варианты сервисов: mail, mobile, bank, gosuslugi")
     @PostMapping("/create")
-    public ClientDto createClient(@RequestHeader(value = APPLICATION) String applicationType,
-                                  @RequestBody ClientDto clientDto) {
+    public ClientResponseDto createClient(@RequestHeader(value = APPLICATION) String applicationType,
+                                  @RequestBody ClientRequestDto clientRequestDto) {
         log.info("Got the request for creating client from application = {}", applicationType);
-        return credentialService.createClient(applicationType, clientDto);
+        return credentialService.createClient(applicationType, clientRequestDto);
     }
 
     @Operation(summary = "Чтение учетной записи по id",
             description = "Возвращает данные клиента по введенному в запросе id")
     @GetMapping("/find/{id}")
-    public ClientDto getClientById(@Positive @PathVariable @Parameter(description = "Идентификатор клиента",
+    public ClientResponseDto getClientById(@Positive @PathVariable @Parameter(description = "Идентификатор клиента",
             example = "1", required = true) Long id) {
         log.info("Got the request for getting client with id = {}", id);
         return credentialService.getClientById(id);
@@ -48,7 +49,7 @@ public class CredentialsController {
     @Operation(summary = "Поиск учетной записи по полям",
             description = "Возвращает данные клиента или клиентов в зависимости от введенных параметров")
     @GetMapping("/find/parameters")
-    public List<ClientDto> getClientByParameters(
+    public List<ClientResponseDto> getClientByParameters(
             @Parameter(description = "Фамилия", example = "Orlova") @RequestParam(required = false) String lastname,
             @Parameter(description = "Имя", example = "Ekaterina") @RequestParam(required = false) String firstname,
             @Parameter(description = "Отчество", example = "Alexandrovna")

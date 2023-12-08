@@ -1,9 +1,12 @@
 package com.neoflex.credentials.mapper;
 
 import com.neoflex.credentials.dto.AddressDto;
-import com.neoflex.credentials.dto.ClientDto;
+import com.neoflex.credentials.dto.ClientRequestDto;
+import com.neoflex.credentials.dto.ClientResponseDto;
+import com.neoflex.credentials.dto.PasswordDto;
 import com.neoflex.credentials.entity.Address;
 import com.neoflex.credentials.entity.Client;
+import com.neoflex.credentials.entity.Password;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -13,25 +16,27 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ClientMapper {
 
-    public static Client toClient(ClientDto clientDto) {
+    public static Client toClient(ClientRequestDto clientRequestDto) {
         Client client = new Client();
 
-        client.setId(clientDto.id());
-        client.setBankId(clientDto.bankId());
-        client.setLastname(clientDto.lastname());
-        client.setFirstname(clientDto.firstname());
-        client.setMiddleName(clientDto.middleName());
-        client.setBirthDate(clientDto.birthDate());
-        client.setPassportNumber(clientDto.passportNumber());
-        client.setBirthPlace(clientDto.birthPlace());
-        client.setPhoneNumber(clientDto.phoneNumber());
-        client.setEmail(clientDto.email());
-        client.setRegistrationAddress(Objects.isNull(clientDto.registrationAddress())
+        client.setBankId(clientRequestDto.bankId());
+        client.setLastname(clientRequestDto.lastname());
+        client.setFirstname(clientRequestDto.firstname());
+        client.setMiddleName(clientRequestDto.middleName());
+        client.setBirthDate(clientRequestDto.birthDate());
+        client.setPassportNumber(clientRequestDto.passportNumber());
+        client.setBirthPlace(clientRequestDto.birthPlace());
+        client.setPhoneNumber(clientRequestDto.phoneNumber());
+        client.setEmail(clientRequestDto.email());
+        client.setPassword(Objects.isNull(clientRequestDto.password())
                 ? null
-                : toAddress(clientDto.registrationAddress()));
-        client.setResidentialAddress(Objects.isNull(clientDto.residentialAddress())
+                : toPassword(clientRequestDto.password()));
+        client.setRegistrationAddress(Objects.isNull(clientRequestDto.registrationAddress())
                 ? null
-                : toAddress(clientDto.residentialAddress()));
+                : toAddress(clientRequestDto.registrationAddress()));
+        client.setResidentialAddress(Objects.isNull(clientRequestDto.residentialAddress())
+                ? null
+                : toAddress(clientRequestDto.residentialAddress()));
 
         return client;
     }
@@ -39,7 +44,6 @@ public final class ClientMapper {
     private static Address toAddress(AddressDto addressDto) {
         Address address = new Address();
 
-        address.setId(addressDto.id());
         address.setRegion(addressDto.region());
         address.setCity(addressDto.city());
         address.setStreet(addressDto.street());
@@ -50,9 +54,9 @@ public final class ClientMapper {
         return address;
     }
 
-    public static ClientDto toClientDto(Client client) {
+    public static ClientResponseDto toClientResponseDto(Client client) {
 
-        return new ClientDto(
+        return new ClientResponseDto(
                 client.getId(),
                 client.getBankId(),
                 client.getLastname(),
@@ -63,6 +67,7 @@ public final class ClientMapper {
                 client.getBirthPlace(),
                 client.getPhoneNumber(),
                 client.getEmail(),
+                client.getRole(),
                 addressDto(client.getRegistrationAddress()),
                 addressDto(client.getResidentialAddress())
         );
@@ -85,9 +90,15 @@ public final class ClientMapper {
                 .build();
     }
 
-    public static List<ClientDto> mapToClients(List<Client> receivedClients) {
+    public static List<ClientResponseDto> mapToClients(List<Client> receivedClients) {
         return receivedClients.stream()
-                .map(ClientMapper::toClientDto)
+                .map(ClientMapper::toClientResponseDto)
                 .toList();
+    }
+
+    private static Password toPassword(PasswordDto passwordDto) {
+        Password password = new Password();
+        password.setUserPassword(passwordDto.password());
+        return password;
     }
  }

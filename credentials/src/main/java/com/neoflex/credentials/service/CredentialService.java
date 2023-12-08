@@ -1,9 +1,10 @@
 package com.neoflex.credentials.service;
 
 import com.neoflex.credentials.config.GlobalVariables;
-import com.neoflex.credentials.dto.ClientDto;
+import com.neoflex.credentials.dto.ClientRequestDto;
 import com.neoflex.credentials.dto.ClientFieldsDto;
 
+import com.neoflex.credentials.dto.ClientResponseDto;
 import com.neoflex.credentials.entity.Client;
 import com.neoflex.credentials.exeption.ClientNotFoundException;
 import com.neoflex.credentials.exeption.ValidationException;
@@ -30,24 +31,24 @@ public class CredentialService {
     private final CustomClientRepository customClientRepository;
     private final CustomAppValidator customAppValidator;
 
-    public ClientDto createClient(String applicationType, ClientDto clientDto) {
+    public ClientResponseDto createClient(String applicationType, ClientRequestDto clientRequestDto) {
         checkApplicationTypeNotBlank(applicationType);
-        validateCredentials(applicationType, clientDto);
-        Client client = ClientMapper.toClient(clientDto);
+        validateCredentials(applicationType, clientRequestDto);
+        Client client = ClientMapper.toClient(clientRequestDto);
 
         Client savedClient = clientRepository.save(client);
         log.info("Saved client equals {}", savedClient);
-        return ClientMapper.toClientDto(savedClient);
+        return ClientMapper.toClientResponseDto(savedClient);
     }
 
-    public ClientDto getClientById(Long clientId) {
+    public ClientResponseDto getClientById(Long clientId) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException("Клиент с id " + clientId + " не существует"));
         log.info("Got the client from the repository: {}", client);
-        return ClientMapper.toClientDto(client);
+        return ClientMapper.toClientResponseDto(client);
     }
 
-    public List<ClientDto> getClientByParameters(ClientFieldsDto clientFieldsDto) {
+    public List<ClientResponseDto> getClientByParameters(ClientFieldsDto clientFieldsDto) {
         List<Criteria> criteria = getCriteria(clientFieldsDto);
         if(criteria.isEmpty()) {
             throw new ValidationException("Укажите хотя бы одно поле для поиска клиента");
@@ -62,15 +63,15 @@ public class CredentialService {
         return ClientMapper.mapToClients(receivedClients);
     }
 
-    private void validateCredentials(String applicationType, ClientDto clientDto) {
+    private void validateCredentials(String applicationType, ClientRequestDto clientRequestDto) {
         log.info("Validate credentials for application {}", applicationType);
         Validator validator = ValidatorFactory.getValidator(applicationType);
 
         if (Objects.isNull(validator)) {
             log.info("Default validator for application {} does not exist", applicationType);
-            customAppValidator.validate(applicationType, clientDto);
+            customAppValidator.validate(applicationType, clientRequestDto);
         } else {
-            validator.validate(clientDto);
+            validator.validate(clientRequestDto);
         }
     }
 
