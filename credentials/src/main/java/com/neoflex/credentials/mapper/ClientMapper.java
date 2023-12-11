@@ -1,9 +1,6 @@
 package com.neoflex.credentials.mapper;
 
-import com.neoflex.credentials.dto.AddressDto;
-import com.neoflex.credentials.dto.ClientRequestDto;
-import com.neoflex.credentials.dto.ClientResponseDto;
-import com.neoflex.credentials.dto.PasswordDto;
+import com.neoflex.credentials.dto.*;
 import com.neoflex.credentials.entity.Address;
 import com.neoflex.credentials.entity.Client;
 import com.neoflex.credentials.entity.Password;
@@ -41,19 +38,6 @@ public final class ClientMapper {
         return client;
     }
 
-    private static Address toAddress(AddressDto addressDto) {
-        Address address = new Address();
-
-        address.setRegion(addressDto.region());
-        address.setCity(addressDto.city());
-        address.setStreet(addressDto.street());
-        address.setBuildingNumber(addressDto.buildingNumber());
-        address.setApartmentNumber(addressDto.apartmentNumber());
-        address.setAddressType(addressDto.addressType());
-
-        return address;
-    }
-
     public static ClientResponseDto toClientResponseDto(Client client) {
 
         return new ClientResponseDto(
@@ -73,6 +57,36 @@ public final class ClientMapper {
         );
     }
 
+    public static List<ClientResponseDto> mapToClients(List<Client> receivedClients) {
+        return receivedClients.stream()
+                .map(ClientMapper::toClientResponseDto)
+                .toList();
+    }
+
+    public static ClientSecurityDto toClientSecurityDto(Client client, String login) {
+        return new ClientSecurityDto(
+                client.getId(),
+                login,
+                Objects.isNull(client.getPassword())
+                        ? null
+                        : client.getPassword().getUserPassword(),
+                client.getRole()
+        );
+    }
+
+    private static Address toAddress(AddressDto addressDto) {
+        Address address = new Address();
+
+        address.setRegion(addressDto.region());
+        address.setCity(addressDto.city());
+        address.setStreet(addressDto.street());
+        address.setBuildingNumber(addressDto.buildingNumber());
+        address.setApartmentNumber(addressDto.apartmentNumber());
+        address.setAddressType(addressDto.addressType());
+
+        return address;
+    }
+
     private static AddressDto addressDto(Address address) {
 
         if (Objects.isNull(address)) {
@@ -88,12 +102,6 @@ public final class ClientMapper {
                 .apartmentNumber(address.getApartmentNumber())
                 .addressType(address.getAddressType())
                 .build();
-    }
-
-    public static List<ClientResponseDto> mapToClients(List<Client> receivedClients) {
-        return receivedClients.stream()
-                .map(ClientMapper::toClientResponseDto)
-                .toList();
     }
 
     private static Password toPassword(PasswordDto passwordDto) {

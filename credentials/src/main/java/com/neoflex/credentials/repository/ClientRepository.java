@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client, Long>, JpaSpecificationExecutor<Client> {
 
-    @Query("select c from Client c where lower(c.email) like lower(concat('%', :login,'%')) " +
-            "or lower(c.bankId) like lower(concat('%', :login,'%'))" +
-            "or lower(c.phoneNumber) like lower(concat('%', :login,'%'))")
+    @Query("select c from Client c where lower(c.email) = lower(:login) " +
+            "or lower(c.bankId) = lower(:login)" +
+            "or lower(c.phoneNumber) = lower(:login)")
     Optional<Client> findByLogin(@Param("login") String login);
 }

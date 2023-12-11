@@ -3,7 +3,9 @@ package com.neoflex.credentials.controller.api;
 import com.neoflex.credentials.dto.ClientRequestDto;
 import com.neoflex.credentials.dto.ClientFieldsDto;
 import com.neoflex.credentials.dto.ClientResponseDto;
+import com.neoflex.credentials.dto.ClientSecurityDto;
 import com.neoflex.credentials.service.CredentialService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,6 +48,16 @@ public class CredentialsController {
         log.info("Got the request for getting client with id = {}", id);
         return credentialService.getClientById(id);
     }
+
+    @Hidden
+    @Operation(summary = "Получение юзера по логину",
+            description = "Возвращает данные юзера для проведения аутентификации")
+    @GetMapping("/find")
+    public ClientSecurityDto getClientByLogin(@Parameter(description = "Логин") @RequestParam String login) {
+        log.info("Got the request for getting client with login = {}", login);
+        return credentialService.getClientByLogin(login);
+    }
+
     @Operation(summary = "Поиск учетной записи по полям",
             description = "Возвращает данные клиента или клиентов в зависимости от введенных параметров")
     @GetMapping("/find/parameters")

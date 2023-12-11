@@ -5,6 +5,7 @@ import com.neoflex.credentials.dto.ClientRequestDto;
 import com.neoflex.credentials.dto.ClientFieldsDto;
 
 import com.neoflex.credentials.dto.ClientResponseDto;
+import com.neoflex.credentials.dto.ClientSecurityDto;
 import com.neoflex.credentials.entity.Client;
 import com.neoflex.credentials.exeption.ClientNotFoundException;
 import com.neoflex.credentials.exeption.ValidationException;
@@ -46,6 +47,13 @@ public class CredentialService {
                 .orElseThrow(() -> new ClientNotFoundException("Клиент с id " + clientId + " не существует"));
         log.info("Got the client from the repository: {}", client);
         return ClientMapper.toClientResponseDto(client);
+    }
+
+    public ClientSecurityDto getClientByLogin(String login) {
+        Client client = clientRepository.findByLogin(login).
+                orElseThrow(() -> new ClientNotFoundException("Клиент с логином " + login + " не существует"));
+        log.info("Got the client from the repository: {}", client);
+        return ClientMapper.toClientSecurityDto(client, login);
     }
 
     public List<ClientResponseDto> getClientByParameters(ClientFieldsDto clientFieldsDto) {
