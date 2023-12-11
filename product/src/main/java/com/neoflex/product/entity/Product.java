@@ -37,6 +37,7 @@ public class Product {
     private String name;
 
     @Column(name = "product_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private ProductType productType;
 
     @Column(name = "start_date", nullable = false)
