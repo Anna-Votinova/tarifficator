@@ -1,0 +1,10 @@
+server:
+  port: 8085
+
+application:
+  security:
+    secret-key: ${SECRET_KEY}
+    expiration-time-millis: ${EXPIRATION_TIME}
+  integration:
+    url:
+      credentials: ${CREDENTIALS_URL}
