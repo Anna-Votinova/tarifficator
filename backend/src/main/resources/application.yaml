@@ -6,3 +6,4 @@ applications:
     credentials: ${CREDENTIALS_URL}
     product: ${PRODUCT_URL}
     tariffs: ${TARIFFS_URL}
+    auth: ${AUTH_URL}

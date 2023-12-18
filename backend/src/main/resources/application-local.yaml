@@ -1,9 +1,11 @@
 CREDENTIALS_URL: http://localhost:8081/credentials
 PRODUCT_URL: http://localhost:8082/product
 TARIFFS_URL: http://localhost:8083/tariffs
+AUTH_URL: http://localhost:8085/auth
 
 logging:
   level:
     com.neoflex.backend.integration.credentials: DEBUG
     com.neoflex.backend.integration.product: DEBUG
     com.neoflex.backend.integration.tariffs: DEBUG
+    com.neoflex.backend.integration.auth: DEBUG
