@@ -51,7 +51,7 @@ public class Client {
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private Role role = Role.USER;
+    private Role role = Role.ROLE_USER;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "registration_address")

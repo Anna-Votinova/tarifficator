@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
+@Schema(description = "Созданный клиент")
 public record ClientResponseDto(
         @Schema(description = "Идентификатор клиента", example = "1")
         Long id,

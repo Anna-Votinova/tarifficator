@@ -9,10 +9,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 @Schema(description = "Клиент")
-public class ClientDto {
-
-        @Schema(description = "Идентификатор клиента", example = "1")
-        private Long id;
+public class ClientResponseDto {
 
         @Schema(description = "Идентификатор клиента в банке", example = "1")
         private Long bankId;
@@ -40,6 +37,9 @@ public class ClientDto {
 
         @Schema(description = "Электронный почтовый ящик", example = "anyvotinova@yandex.ru")
         private String email;
+
+        @Schema(description = "Пароль")
+        private String password;
 
         @Schema(description = "Адрес регистрации")
         private AddressDto registrationAddress;

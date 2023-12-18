@@ -6,6 +6,7 @@ import com.neoflex.credentials.dto.ClientFieldsDto;
 
 import com.neoflex.credentials.dto.ClientResponseDto;
 import com.neoflex.credentials.dto.ClientSecurityDto;
+import com.neoflex.credentials.dto.enums.Role;
 import com.neoflex.credentials.entity.Client;
 import com.neoflex.credentials.exeption.ClientNotFoundException;
 import com.neoflex.credentials.exeption.ValidationException;
@@ -43,8 +44,7 @@ public class CredentialService {
     }
 
     public ClientResponseDto getClientById(Long clientId) {
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ClientNotFoundException("Клиент с id " + clientId + " не существует"));
+        Client client = getClientByIdOrThrowException(clientId);
         log.info("Got the client from the repository: {}", client);
         return ClientMapper.toClientResponseDto(client);
     }
@@ -69,6 +69,13 @@ public class CredentialService {
         }
         log.info("Received clients {}", receivedClients.size());
         return ClientMapper.mapToClients(receivedClients);
+    }
+
+    public void changeRole(Long clientId, Role role) {
+        Client client = getClientByIdOrThrowException(clientId);
+        client.setRole(role);
+        clientRepository.save(client);
+        log.info("Saved client with id {} with new role: {}", clientId, client.getRole());
     }
 
     private void validateCredentials(String applicationType, ClientRequestDto clientRequestDto) {
@@ -111,5 +118,10 @@ public class CredentialService {
         if (applicationType.isBlank()) {
             throw new ValidationException("Название приложения должно быть указано");
         }
+    }
+
+    private Client getClientByIdOrThrowException(Long clientId) {
+        return clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientNotFoundException("Клиент с id " + clientId + " не существует"));
     }
 }

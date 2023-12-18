@@ -1,6 +1,5 @@
 package com.neoflex.credentials.dto;
 
-import com.neoflex.credentials.dto.enums.Role;
 import lombok.ToString;
 
 /**
@@ -15,5 +14,5 @@ public record ClientSecurityDto(
         String login,
         @ToString.Exclude
         String password,
-        Role role
+        String role
 ) {}

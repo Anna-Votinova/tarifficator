@@ -35,7 +35,8 @@ public record ClientRequestDto(
         @Schema(description = "Электронный почтовый ящик", example = "anyvotinova@yandex.ru")
         String email,
 
-        PasswordDto password,
+        @Schema(description = "Пароль")
+        String password,
 
         @Schema(description = "Адрес регистрации")
         AddressDto registrationAddress,

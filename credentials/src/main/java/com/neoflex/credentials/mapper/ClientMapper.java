@@ -25,9 +25,7 @@ public final class ClientMapper {
         client.setBirthPlace(clientRequestDto.birthPlace());
         client.setPhoneNumber(clientRequestDto.phoneNumber());
         client.setEmail(clientRequestDto.email());
-        client.setPassword(Objects.isNull(clientRequestDto.password())
-                ? null
-                : toPassword(clientRequestDto.password()));
+        client.setPassword(new Password(clientRequestDto.password()));
         client.setRegistrationAddress(Objects.isNull(clientRequestDto.registrationAddress())
                 ? null
                 : toAddress(clientRequestDto.registrationAddress()));
@@ -70,7 +68,7 @@ public final class ClientMapper {
                 Objects.isNull(client.getPassword())
                         ? null
                         : client.getPassword().getUserPassword(),
-                client.getRole()
+                client.getRole().name()
         );
     }
 
@@ -102,11 +100,5 @@ public final class ClientMapper {
                 .apartmentNumber(address.getApartmentNumber())
                 .addressType(address.getAddressType())
                 .build();
-    }
-
-    private static Password toPassword(PasswordDto passwordDto) {
-        Password password = new Password();
-        password.setUserPassword(passwordDto.password());
-        return password;
     }
  }

@@ -32,6 +32,10 @@ public class Password {
     @Setter(AccessLevel.NONE)
     private LocalDateTime updateDate;
 
+    public Password(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
