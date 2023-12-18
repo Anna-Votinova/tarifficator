@@ -30,12 +30,11 @@ public class SecurityConfiguration {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests
-                                .requestMatchers("/**").hasRole("USER")
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/v3/api-docs/**", "/v2/api-docs", "/configuration/ui",
-                                        "/swagger-resources", "/configuration/security", "/swagger-ui.html",
-                                        "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-ui/**",
-                                        "/swagger-resources/configuration/security", "/swagger-resources/**")
+                                .requestMatchers("/auth/verify").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(
+                                        "/auth/register",
+                                        "/auth/authenticate",
+                                        "/api/auth/**")
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -48,5 +47,4 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 }

@@ -8,6 +8,7 @@ import com.neoflex.auth.exception.ClientNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +33,13 @@ public class GlobalControllerAdvice {
     public ErrorResponse handleAuthorizationException(AuthorizationException e) {
         log.error(e.getMessage(), e);
         return new ErrorResponse("Ошибка токена: ", e.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
+        log.error(e.getMessage(), e);
+        return new ErrorResponse("Ошибка введенных данных: ", e.getMessage());
     }
 
     @ExceptionHandler(ClientNotFoundException.class)

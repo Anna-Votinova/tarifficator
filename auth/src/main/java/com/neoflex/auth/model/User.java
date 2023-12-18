@@ -15,6 +15,8 @@ import java.util.Collections;
 @Setter
 @NoArgsConstructor
 @ToString
+@Builder
+@AllArgsConstructor
 public class User implements UserDetails {
 
     private Long id;

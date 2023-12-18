@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JWTProvider {
@@ -30,7 +32,7 @@ public class JWTProvider {
         return claimsResolver.apply(claims);
     }
 
-    public String generateSimpleToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -62,11 +64,12 @@ public class JWTProvider {
         return Jwts.parser()
                 .verifyWith(getSigningKey()) //decryptWith?
                 .build()
-                .parseUnsecuredClaims(token)
+                .parseSignedClaims(token)
                 .getPayload();
     }
 
     private SecretKey getSigningKey() {
+        log.info("Get secret key {}", securityProperties.getSecretKey());
         byte[] keyByte = Decoders.BASE64.decode(securityProperties.getSecretKey());
         return Keys.hmacShaKeyFor(keyByte);
     }

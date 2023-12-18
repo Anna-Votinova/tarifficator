@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Validated
@@ -18,4 +20,5 @@ public class SecurityProperties {
     private String secretKey;
     @NotNull
     private long expirationTimeMillis;
+    private List<String> services;
 }

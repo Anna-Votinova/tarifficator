@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Objects;
 
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JWTAuthFilter extends OncePerRequestFilter {
@@ -31,30 +32,23 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader;
-        String token;
-        String login;
-
-        authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (Objects.isNull(authHeader) || !authHeader.startsWith("Bearer")) {
-            response.sendError(HttpServletResponse.SC_CONFLICT,
-                    "Заголовок не может быть пустым и должен начинаться с префикса Bearer");// нужно или нет
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (Objects.isNull(authHeader) || !authHeader.startsWith("Bearer ")) {
+            log.error("Заголовок не может быть пустым и должен начинаться с префикса Bearer");
             filterChain.doFilter(request, response);
             return;
         }
 
-        token = authHeader.substring(7);
+        String token = authHeader.substring(7);
         if (token.isBlank()) {
-            response.sendError(HttpServletResponse.SC_CONFLICT,
-                    "Токен не может быть пустым");
+            log.error("Токен не может быть пустым");
             filterChain.doFilter(request, response);
             return;
         }
 
-        login = jwtProvider.extractLogin(token);
+        String login = jwtProvider.extractLogin(token);
         if (Objects.isNull(login) || login.isBlank()) {
-            response.sendError(HttpServletResponse.SC_CONFLICT,
-                "У токена отсутствует логин");
+            log.error("У токена отсутствует логин");
             filterChain.doFilter(request, response);
             return;
         }
@@ -64,8 +58,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             boolean isTokenValid = jwtProvider.isTokenValid(token, userDetails);
 
             if (!isTokenValid) {
-                response.sendError(HttpServletResponse.SC_CONFLICT,
-                        "Токен невалиден");
+                log.error("Токен невалиден");
                 filterChain.doFilter(request, response);
                 return;
             }

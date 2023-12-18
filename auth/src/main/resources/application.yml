@@ -5,6 +5,11 @@ application:
   security:
     secret-key: ${SECRET_KEY}
     expiration-time-millis: ${EXPIRATION_TIME}
+    services:
+      - product
+      - tariffs
   integration:
     url:
       credentials: ${CREDENTIALS_URL}
+
+
