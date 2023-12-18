@@ -29,28 +29,31 @@ public class ProductController {
     @Operation(summary = "Создание продукта",
             description = "Создает продукт без возможности создать тариф сразу")
     @PostMapping("/create")
-    public ProductDto createProduct(@Valid @RequestBody CreateProductDto productDto) {
+    public ProductDto createProduct(@RequestHeader("Authorization") String accessToken,
+                                    @Valid @RequestBody CreateProductDto productDto) {
         log.info("Got the request to create product {}", productDto);
-        return productService.create(productDto);
+        return productService.create(accessToken, productDto);
     }
 
     @Operation(summary = "Обновление продукта",
             description = "Обновляет продукт без возможности обновления тарифа")
     @PutMapping("/update/{productId}")
     public ProductDto updateProduct(
+            @RequestHeader("Authorization") String accessToken,
             @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId,
             @Valid @RequestBody UpdateProductDto updateProductDto) {
         log.info("Got the request to update product {}", updateProductDto);
-        return productService.update(productId, updateProductDto);
+        return productService.update(accessToken, productId, updateProductDto);
     }
 
     @Operation(summary = "Удаление продукта",
             description = "Удаляет продукт по идентификатору")
     @DeleteMapping("/remove/{productId}")
-    public void removeProduct(@PathVariable @Parameter(description = "Идентификатор продукта",
+    public void removeProduct(@RequestHeader("Authorization") String accessToken,
+                              @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId) {
         log.info("Got the request to delete product with id {}", productId);
-        productService.remove(productId);
+        productService.remove(accessToken, productId);
     }
 }

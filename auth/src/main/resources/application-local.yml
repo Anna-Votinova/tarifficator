@@ -1,0 +1,8 @@
+#in milliseconds
+EXPIRATION_TIME: 86400000
+CREDENTIALS_URL: http://localhost:8081/credentials
+
+logging:
+  level:
+    com.neoflex.auth.integration.credentials: DEBUG
+    org.springframework.security: TRACE

@@ -24,3 +24,7 @@ product:
   kafka:
     bootstrap-address: ${KAFKA_BOOTSTRAP_SERVERS}
     install-tariff-topic: install-tariff
+
+applications:
+  url:
+    auth: ${AUTH_URL}

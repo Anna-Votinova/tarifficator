@@ -1,49 +1,46 @@
-package com.neoflex.backend.dto.credentials;
+package com.neoflex.credentials.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
-@Builder
 @Schema(description = "Клиент")
-public class ClientDto {
-
-        @Schema(description = "Идентификатор клиента", example = "1")
-        private Long id;
-
+@Builder
+public record ClientRequestDto(
         @Schema(description = "Идентификатор клиента в банке", example = "1")
-        private Long bankId;
+        String bankId,
 
         @Schema(description = "Фамилия", example = "Orlova")
-        private String lastname;
+        String lastname,
 
         @Schema(description = "Имя", example = "Ekaterina")
-        private String firstname;
+        String firstname,
 
         @Schema(description = "Отчество", example = "Alexandrovna")
-        private String middleName;
+        String middleName,
 
         @Schema(description = "Дата рождения", example = "1990-01-12")
-        private LocalDate birthDate;
+        LocalDate birthDate,
 
         @Schema(description = "Номер паспорта", example = "1234567890")
-        private String passportNumber;
+        String passportNumber,
 
         @Schema(description = "Место рождения", example = "Moscow")
-        private String birthPlace;
+        String birthPlace,
 
         @Schema(description = "Номер телефона", example = "7ХХХХХХХХХХ")
-        private String phoneNumber;
+        String phoneNumber,
 
         @Schema(description = "Электронный почтовый ящик", example = "anyvotinova@yandex.ru")
-        private String email;
+        String email,
+
+        @Schema(description = "Пароль")
+        String password,
 
         @Schema(description = "Адрес регистрации")
-        private AddressDto registrationAddress;
+        AddressDto registrationAddress,
 
         @Schema(description = "Адрес проживания")
-        private AddressDto residentialAddress;
-}
+        AddressDto residentialAddress
+) {}

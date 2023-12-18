@@ -13,11 +13,13 @@ import java.util.UUID;
 public interface ProductClient {
 
     @PostMapping("/create")
-    ProductDto createProduct(@RequestBody CreateProductDto productDto);
+    ProductDto createProduct(@RequestHeader("Authorization") String accessToken,
+                             @RequestBody CreateProductDto productDto);
 
     @PutMapping("/update/{productId}")
-    ProductDto updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductDto updateProductDto);
+    ProductDto updateProduct(@RequestHeader("Authorization") String accessToken,
+                             @PathVariable UUID productId, @RequestBody UpdateProductDto updateProductDto);
 
     @DeleteMapping("/remove/{productId}")
-    void removeProduct(@PathVariable UUID productId);
+    void removeProduct(@RequestHeader("Authorization") String accessToken, @PathVariable UUID productId);
 }

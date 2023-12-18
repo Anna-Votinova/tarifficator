@@ -4,6 +4,7 @@ import com.neoflex.product.dto.ProductDto;
 import com.neoflex.product.entity.Product;
 import com.neoflex.product.exception.RevisionException;
 import com.neoflex.product.exception.ValidationException;
+import com.neoflex.product.integration.feign.AuthClient;
 import com.neoflex.product.mapper.ProductMapper;
 import com.neoflex.product.repository.ProductRepository;
 import com.neoflex.product.repository.ProductRevisionRepository;
@@ -28,10 +29,13 @@ import java.util.*;
 @RequiredArgsConstructor
 public class AuditService {
 
+    private static final String SERVICE_NAME = "product";
+
     private final ProductRevisionRepository productRevisionRepository;
     private final ProductRepository productRepository;
     private final AuditReader auditReader;
     private final EntityManager entityManager;
+    private final AuthClient authClient;
 
     /**
      * <p> Returns actual version of a product from audit tables
@@ -40,7 +44,8 @@ public class AuditService {
      * @return the product with info about its author and version
      */
     @Transactional(readOnly = true)
-    public ProductDto getActualVersion(UUID productId) {
+    public ProductDto getActualVersion(String accessToken, UUID productId) {
+        verifyUser(accessToken);
         Product actualProduct = getRevision(productId).getEntity();
         log.info("Actual version of the product {}", actualProduct);
         return ProductMapper.toProductDto(actualProduct);
@@ -54,7 +59,8 @@ public class AuditService {
      * @throws com.neoflex.product.exception.RevisionException if the revision for the product is not found
      */
     @Transactional(readOnly = true)
-    public List<ProductDto> getPreviousVersions(UUID productId) {
+    public List<ProductDto> getPreviousVersions(String accessToken, UUID productId) {
+        verifyUser(accessToken);
         Product actualProduct = getRevision(productId).getEntity();
 
         List<Product> previousProducts = productRevisionRepository.findRevisions(productId).stream()
@@ -75,7 +81,8 @@ public class AuditService {
      * @throws com.neoflex.product.exception.ValidationException if the start date is after the end date
      */
     @Transactional(readOnly = true)
-    public List<ProductDto> getVersionsByPeriod(LocalDate fromDate, LocalDate toDate, UUID productId) {
+    public List<ProductDto> getVersionsByPeriod(String accessToken, LocalDate fromDate, LocalDate toDate, UUID productId) {
+        verifyUser(accessToken);
         if (CheckDateUtil.isDateBefore(toDate, fromDate)) {
             throw new ValidationException("Дата окончания поиска не должна быть раньше даты начала поиска");
         }
@@ -103,7 +110,8 @@ public class AuditService {
      * @return the product with a proper version
      */
     @Transactional
-    public ProductDto revertVersion(UUID productId, long version) {
+    public ProductDto revertVersion(String accessToken, UUID productId, long version) {
+        verifyUser(accessToken);
         Revision<Long,Product> lastRevision = getRevision(productId);
 
         if (lastRevision.getEntity().getVersion() < version) {
@@ -149,5 +157,10 @@ public class AuditService {
         updatingProduct.setTariffDto(previousProductVersion.getTariffDto());
 
         return updatingProduct;
+    }
+
+    private void verifyUser(String accessToken) {
+        String login = authClient.verify(accessToken, SERVICE_NAME);
+        log.info("Token {} verified. Username {}", accessToken, login);
     }
 }

@@ -1,4 +1,4 @@
-package com.neoflex.credentials.dto;
+package com.neoflex.backend.dto.credentials;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -7,12 +7,9 @@ import java.time.LocalDate;
 
 @Schema(description = "Клиент")
 @Builder
-public record ClientDto(
-        @Schema(description = "Идентификатор клиента", example = "1")
-        Long id,
-
+public record ClientRequestDto(
         @Schema(description = "Идентификатор клиента в банке", example = "1")
-        Long bankId,
+        String bankId,
 
         @Schema(description = "Фамилия", example = "Orlova")
         String lastname,
@@ -37,6 +34,9 @@ public record ClientDto(
 
         @Schema(description = "Электронный почтовый ящик", example = "anyvotinova@yandex.ru")
         String email,
+
+        @Schema(description = "Пароль")
+        String password,
 
         @Schema(description = "Адрес регистрации")
         AddressDto registrationAddress,

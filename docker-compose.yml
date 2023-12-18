@@ -104,3 +104,13 @@ services:
       - CREDENTIALS_URL=http://credentials:8081/credentials
       - PRODUCT_URL=http://product:8082/product
       - TARIFFS_URL=http://tariffs:8083/tariffs
+
+  auth:
+    build: auth
+    container_name: auth
+    ports:
+      - "8085:8085"
+    environment:
+      - CREDENTIALS_URL=http://localhost:8081/credentials
+    env_file:
+      - secret-auth.env

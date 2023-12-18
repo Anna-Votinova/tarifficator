@@ -1,5 +1,6 @@
 package com.neoflex.credentials.entity;
 
+import com.neoflex.credentials.dto.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +12,8 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @Table(name = "client", schema = "public")
+@Builder
+@AllArgsConstructor
 public class Client {
 
     @Id
@@ -18,7 +21,7 @@ public class Client {
     private Long id;
 
     @Column(name = "bank_id")
-    private Long bankId;
+    private String bankId;
 
     private String lastname;
 
@@ -40,6 +43,15 @@ public class Client {
     private String phoneNumber;
 
     private String email;
+
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "password_id")
+    @ToString.Exclude
+    private Password password;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Role role = Role.ROLE_USER;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "registration_address")

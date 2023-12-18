@@ -3,9 +3,7 @@ package com.neoflex.tariffs.controller.advice;
 import com.neoflex.tariffs.dto.error.ErrorResponse;
 import com.neoflex.tariffs.dto.error.ValidationErrorResponse;
 import com.neoflex.tariffs.dto.error.Violation;
-import com.neoflex.tariffs.exception.TariffNotFoundException;
-import com.neoflex.tariffs.exception.RevisionException;
-import com.neoflex.tariffs.exception.ValidationException;
+import com.neoflex.tariffs.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,6 +45,27 @@ public class GlobalControllerAdvice {
     public ErrorResponse handleValidationException(ValidationException e) {
         log.error(e.getMessage(), e);
         return new ErrorResponse("Ошибка введенных данных: ", e.getMessage());
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleAuthorizationException(AuthorizationException e) {
+        log.error(e.getMessage(), e);
+        return new ErrorResponse("Ошибка токена: ", e.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleUserNotFoundException(UserNotFoundException e) {
+        log.error(e.getMessage(), e);
+        return new ErrorResponse("Ошибка валидации токена: ", e.getMessage());
+    }
+
+    @ExceptionHandler(AccessException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessException(AccessException e) {
+        log.error(e.getMessage(), e);
+        return new ErrorResponse("Ошибка валидации токена: ", e.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

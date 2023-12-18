@@ -1,6 +1,6 @@
 package com.neoflex.credentials.service.util.impl;
 
-import com.neoflex.credentials.dto.ClientDto;
+import com.neoflex.credentials.dto.ClientRequestDto;
 import com.neoflex.credentials.exeption.InvalidCredentialsException;
 import com.neoflex.credentials.service.util.NullOrBlankUtil;
 import com.neoflex.credentials.service.util.Validator;
@@ -13,12 +13,12 @@ import java.util.Objects;
 @Slf4j
 public class BankAppValidator implements Validator {
     @Override
-    public void validate(ClientDto clientDto) {
+    public void validate(ClientRequestDto clientRequestDto) {
         log.info("Validate client bank id = [{}]; lastname = [{}]; firstname = [{}]; middleName = [{}], " +
-                        "birth date = [{}], passport number = [{}]", clientDto.bankId(), clientDto.lastname(),
-                clientDto.firstname(), clientDto.middleName(), clientDto.birthDate(), clientDto.passportNumber());
+                        "birth date = [{}], passport number = [{}]", clientRequestDto.bankId(), clientRequestDto.lastname(),
+                clientRequestDto.firstname(), clientRequestDto.middleName(), clientRequestDto.birthDate(), clientRequestDto.passportNumber());
 
-        if (isNotValid(clientDto)) {
+        if (isNotValid(clientRequestDto)) {
             throw new InvalidCredentialsException("Bank_id, фамилия, имя, отчество, дата рождения и номер паспорта не " +
                     "должны быть пустыми или равны null.");
         }
@@ -26,12 +26,12 @@ public class BankAppValidator implements Validator {
     }
 
     @Override
-    public boolean isNotValid(ClientDto clientDto) {
-        return Objects.isNull(clientDto.bankId())
-                || NullOrBlankUtil.isNullOrBlank(clientDto.lastname())
-                || NullOrBlankUtil.isNullOrBlank(clientDto.firstname())
-                || NullOrBlankUtil.isNullOrBlank(clientDto.middleName())
-                || Objects.isNull(clientDto.birthDate())
-                || NullOrBlankUtil.isNullOrBlank(clientDto.passportNumber());
+    public boolean isNotValid(ClientRequestDto clientRequestDto) {
+        return Objects.isNull(clientRequestDto.bankId())
+                || NullOrBlankUtil.isNullOrBlank(clientRequestDto.lastname())
+                || NullOrBlankUtil.isNullOrBlank(clientRequestDto.firstname())
+                || NullOrBlankUtil.isNullOrBlank(clientRequestDto.middleName())
+                || Objects.isNull(clientRequestDto.birthDate())
+                || NullOrBlankUtil.isNullOrBlank(clientRequestDto.passportNumber());
     }
 }

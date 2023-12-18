@@ -14,20 +14,24 @@ import java.util.UUID;
 public interface TariffClient {
 
     @PostMapping("/create")
-    TariffDto createTariff(@RequestBody TariffCreateDto tariffCreateDto);
+    TariffDto createTariff(@RequestHeader("Authorization") String accessToken,
+                           @RequestBody TariffCreateDto tariffCreateDto);
 
     @PutMapping("/update/{tariffId}")
-    TariffDto updateTariff(@PathVariable UUID tariffId, @RequestBody TariffUpdateDto tariffUpdateDto);
+    TariffDto updateTariff(@RequestHeader("Authorization") String accessToken,
+                           @PathVariable UUID tariffId, @RequestBody TariffUpdateDto tariffUpdateDto);
 
     @DeleteMapping("/remove/{tariffId}")
-    void removeTariff(@PathVariable UUID tariffId);
+    void removeTariff(@RequestHeader("Authorization") String accessToken, @PathVariable UUID tariffId);
 
     @PutMapping("/install/{productId}/tariff/{tariffId}")
-    void installTariff(@PathVariable UUID productId, @PathVariable UUID tariffId);
+    void installTariff(@RequestHeader("Authorization") String accessToken,
+                       @PathVariable UUID productId, @PathVariable UUID tariffId);
 
     @GetMapping("/{tariffId}")
-    TariffDto getTariff(@PathVariable UUID tariffId);
+    TariffDto getTariff(@RequestHeader("Authorization") String accessToken, @PathVariable UUID tariffId);
 
     @GetMapping()
-    List<TariffDto> getAll(@RequestParam String searchPhrase, @RequestParam int fromPage, @RequestParam int toPage);
+    List<TariffDto> getAll(@RequestHeader("Authorization") String accessToken,
+                           @RequestParam String searchPhrase, @RequestParam int fromPage, @RequestParam int toPage);
 }

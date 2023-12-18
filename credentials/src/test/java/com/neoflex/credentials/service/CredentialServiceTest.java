@@ -1,8 +1,9 @@
 package com.neoflex.credentials.service;
 
 import com.neoflex.credentials.dto.AddressDto;
-import com.neoflex.credentials.dto.ClientDto;
+import com.neoflex.credentials.dto.ClientRequestDto;
 import com.neoflex.credentials.dto.ClientFieldsDto;
+import com.neoflex.credentials.dto.ClientResponseDto;
 import com.neoflex.credentials.dto.enums.AddressType;
 import com.neoflex.credentials.entity.Client;
 import com.neoflex.credentials.exeption.ClientNotFoundException;
@@ -57,7 +58,7 @@ class CredentialServiceTest {
     void shouldCreateClient_WhenValidCredentialsAndApplicationTypeMail() {
         var application = "mail";
         var client = new Client();
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .firstname("Anna")
                 .email("email@ya.ru")
                 .build();
@@ -73,7 +74,7 @@ class CredentialServiceTest {
     void shouldCreateClient_WhenValidCredentialsAndApplicationTypeMobile() {
         var application = "mobile";
         var client = new Client();
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .phoneNumber("79999999999")
                 .build();
 
@@ -119,7 +120,7 @@ class CredentialServiceTest {
     void shouldInvokeCustomValidator_WhenCustomApplicationTypeAll() {
         var application = "all";
         var client = new Client();
-        var clientDto = ClientDto.builder().build();
+        var clientDto = ClientRequestDto.builder().build();
 
         when(clientRepository.save(any())).thenReturn(client);
 
@@ -132,7 +133,7 @@ class CredentialServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "  "})
     void shouldThrowException_WhenApplicationTypeIsBlank(String blankApplicationType) {
-        var clientDto = ClientDto.builder().build();
+        var clientDto = ClientRequestDto.builder().build();
 
         assertThrows(ValidationException.class, () -> credentialService.createClient(blankApplicationType, clientDto));
     }
@@ -140,7 +141,7 @@ class CredentialServiceTest {
     @Test
     void shouldThrowException_WhenApplicationTypeMailAndNullFirstName() {
         var application = "mail";
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .firstname(null)
                 .email("email@ya.ru")
                 .build();
@@ -152,7 +153,7 @@ class CredentialServiceTest {
     @ValueSource(strings = {"", "  "})
     void shouldThrowException_WhenApplicationTypeMailAndBlankFirstName(String blankFirstname) {
         var application = "mail";
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .firstname(blankFirstname)
                 .email("email@ya.ru")
                 .build();
@@ -163,7 +164,7 @@ class CredentialServiceTest {
     @Test
     void shouldThrowException_WhenApplicationTypeMailAndNullEmail() {
         var application = "mail";
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .firstname("Ann")
                 .email(null)
                 .build();
@@ -175,7 +176,7 @@ class CredentialServiceTest {
     @ValueSource(strings = {"", "  "})
     void shouldThrowException_WhenApplicationTypeMailAndBlankEmail(String blankEmail) {
         var application = "mail";
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .firstname("Ann")
                 .email(blankEmail)
                 .build();
@@ -186,7 +187,7 @@ class CredentialServiceTest {
     @Test
     void shouldThrowException_WhenApplicationTypeMobileAndNullPhoneNumber() {
         var application = "mobile";
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .phoneNumber(null)
                 .build();
 
@@ -197,7 +198,7 @@ class CredentialServiceTest {
     @ValueSource(strings = {"", "  "})
     void shouldThrowException_WhenApplicationTypeMobileAndBlankPhoneNumber(String blankPhoneNumber) {
         var application = "mobile";
-        var clientDto = ClientDto.builder()
+        var clientDto = ClientRequestDto.builder()
                 .phoneNumber(blankPhoneNumber)
                 .build();
 
@@ -752,7 +753,7 @@ class CredentialServiceTest {
 
         when(customClientRepository.getClientsByParameters(any())).thenReturn(Collections.emptyList());
 
-        List<ClientDto> receivedClients = credentialService.getClientByParameters(clientFieldsDto);
+        List<ClientResponseDto> receivedClients = credentialService.getClientByParameters(clientFieldsDto);
 
         assertEquals(0, receivedClients.size());
         verify(customClientRepository).getClientsByParameters(any());
@@ -768,9 +769,9 @@ class CredentialServiceTest {
                 .addressType(AddressType.REGISTRATION);
     }
 
-    private ClientDto.ClientDtoBuilder getClientDtoBuilder() {
-        return ClientDto.builder()
-                .bankId(1L)
+    private ClientRequestDto.ClientRequestDtoBuilder getClientDtoBuilder() {
+        return ClientRequestDto.builder()
+                .bankId("12323")
                 .lastname("Orlova")
                 .firstname("Olga")
                 .middleName("Igorevna")

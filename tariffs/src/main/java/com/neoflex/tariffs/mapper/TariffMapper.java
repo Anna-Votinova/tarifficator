@@ -36,7 +36,7 @@ public final class TariffMapper {
                 .version(tariff.getVersion())
                 .build();
     }
-    public static TariffKafkaMessage toTariffKafkaMessage(UUID productId, Tariff tariff) {
+    public static TariffKafkaMessage toTariffKafkaMessage(UUID productId, Tariff tariff, String login) {
         return TariffKafkaMessage.builder()
                 .id(tariff.getId())
                 .name(tariff.getName())
@@ -47,6 +47,7 @@ public final class TariffMapper {
                 .rate(tariff.getRate())
                 .author(tariff.getAuthor())
                 .version(tariff.getVersion())
+                .email(login)
                 .build();
     }
 

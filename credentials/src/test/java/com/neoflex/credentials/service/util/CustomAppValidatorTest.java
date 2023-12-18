@@ -2,7 +2,7 @@ package com.neoflex.credentials.service.util;
 
 import com.neoflex.credentials.config.ApplicationProperties;
 import com.neoflex.credentials.dto.AddressDto;
-import com.neoflex.credentials.dto.ClientDto;
+import com.neoflex.credentials.dto.ClientRequestDto;
 import com.neoflex.credentials.dto.enums.AddressType;
 import com.neoflex.credentials.exeption.ApplicationNotSupportedException;
 import com.neoflex.credentials.exeption.InvalidCredentialsException;
@@ -57,7 +57,7 @@ class CustomAppValidatorTest {
     @Test
     void shouldThrowException_WhenApplicationTypeUnknown() {
         var applicationUniversity = "university";
-        var clientDto = ClientDto.builder().build();
+        var clientDto = ClientRequestDto.builder().build();
 
         when(applicationProperties.getNewApplications()).thenReturn(applicationFieldsMap);
 
@@ -280,13 +280,13 @@ class CustomAppValidatorTest {
                 .addressType(AddressType.REGISTRATION);
     }
 
-    private ClientDto.ClientDtoBuilder getClientDtoBuilder() {
+    private ClientRequestDto.ClientRequestDtoBuilder getClientDtoBuilder() {
         var residentialAddress = getAddressBuilder()
                 .addressType(AddressType.RESIDENTIAL)
                 .build();
 
-        return ClientDto.builder()
-                .bankId(1L)
+        return ClientRequestDto.builder()
+                .bankId("12323")
                 .lastname("Orlova")
                 .firstname("Olga")
                 .middleName("Igorevna")

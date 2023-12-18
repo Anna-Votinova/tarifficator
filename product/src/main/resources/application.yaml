@@ -35,3 +35,7 @@ application:
     smtp-auth-enabled: true
     smtp-starttls-enabled: true
     debug-enabled: true
+
+applications:
+  url:
+    auth: ${AUTH_URL}

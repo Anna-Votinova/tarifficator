@@ -18,4 +18,5 @@ public class TariffKafkaMessage {
     private Double rate;
     private Long author;
     private long version;
+    private String email;
 }

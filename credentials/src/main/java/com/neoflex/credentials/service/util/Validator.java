@@ -1,8 +1,8 @@
 package com.neoflex.credentials.service.util;
 
-import com.neoflex.credentials.dto.ClientDto;
+import com.neoflex.credentials.dto.ClientRequestDto;
 
 public interface Validator {
-    void validate(ClientDto clientDto);
-    boolean isNotValid(ClientDto clientDto);
+    void validate(ClientRequestDto clientRequestDto);
+    boolean isNotValid(ClientRequestDto clientRequestDto);
 }

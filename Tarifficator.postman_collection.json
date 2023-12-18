@@ -1,0 +1,455 @@
+{
+	"info": {
+		"_postman_id": "8483fee5-161b-4f9f-9d48-79d93a72a445",
+		"name": "Tarifficator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21448774"
+	},
+	"item": [
+		{
+			"name": "Cоздание юзера 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-Source",
+						"value": "mail",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bankId\": \"1\",\r\n  \"lastname\": \"Orlova\",\r\n  \"firstname\": \"Ekaterina\",\r\n  \"middleName\": \"Alexandrovna\",\r\n  \"birthDate\": \"1990-01-12\",\r\n  \"passportNumber\": \"1234567890\",\r\n  \"birthPlace\": \"Moscow\",\r\n  \"phoneNumber\": \"7ХХХХХХХХХХ\",\r\n  \"email\": \"anyvotinova@yandex.ru\",\r\n  \"password\": \"string\",\r\n  \"registrationAddress\": {\r\n    \"id\": 1,\r\n    \"region\": \"Voronezh region\",\r\n    \"city\": \"Voronezh\",\r\n    \"street\": \"Лизюкова\",\r\n    \"buildingNumber\": \"104б\",\r\n    \"apartmentNumber\": \"564\",\r\n    \"addressType\": \"REGISTRATION\"\r\n  },\r\n  \"residentialAddress\": {\r\n    \"id\": 1,\r\n    \"region\": \"Voronezh region\",\r\n    \"city\": \"Voronezh\",\r\n    \"street\": \"Лизюкова\",\r\n    \"buildingNumber\": \"104б\",\r\n    \"apartmentNumber\": \"564\",\r\n    \"addressType\": \"REGISTRATION\"\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменение роли 1 юзера",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/credentials/role/50?role=ROLE_ADMIN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"credentials",
+						"role",
+						"50"
+					],
+					"query": [
+						{
+							"key": "role",
+							"value": "ROLE_ADMIN"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cоздание юзера 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-Source",
+						"value": "mail",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bankId\": \"2\",\r\n  \"lastname\": \"Solntceva\",\r\n  \"firstname\": \"Ekaterina\",\r\n  \"middleName\": \"Alexandrovna\",\r\n  \"birthDate\": \"1990-01-12\",\r\n  \"passportNumber\": \"1234567890\",\r\n  \"birthPlace\": \"Moscow\",\r\n  \"phoneNumber\": \"79999999999\",\r\n  \"email\": \"AnnaVPonomareva@yandex.ru\",\r\n  \"password\": \"password\",\r\n  \"registrationAddress\": {\r\n    \"id\": 1,\r\n    \"region\": \"Voronezh region\",\r\n    \"city\": \"Voronezh\",\r\n    \"street\": \"Лизюкова\",\r\n    \"buildingNumber\": \"104б\",\r\n    \"apartmentNumber\": \"564\",\r\n    \"addressType\": \"REGISTRATION\"\r\n  },\r\n  \"residentialAddress\": {\r\n    \"id\": 1,\r\n    \"region\": \"Voronezh region\",\r\n    \"city\": \"Voronezh\",\r\n    \"street\": \"Лизюкова\",\r\n    \"buildingNumber\": \"104б\",\r\n    \"apartmentNumber\": \"564\",\r\n    \"addressType\": \"REGISTRATION\"\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cоздание юзера 3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-Source",
+						"value": "mail",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bankId\": \"4\",\r\n  \"lastname\": \"Petrov\",\r\n  \"firstname\": \"Aleksey\",\r\n  \"middleName\": \"Igorevich\",\r\n  \"birthDate\": \"1990-01-12\",\r\n  \"passportNumber\": \"1234567890\",\r\n  \"birthPlace\": \"Moscow\",\r\n  \"phoneNumber\": \"79999999998\",\r\n  \"email\": \"annavotinova13@gmail.com\",\r\n  \"password\": \"password1\",\r\n  \"registrationAddress\": {\r\n    \"id\": 1,\r\n    \"region\": \"Voronezh region\",\r\n    \"city\": \"Voronezh\",\r\n    \"street\": \"Лизюкова\",\r\n    \"buildingNumber\": \"104б\",\r\n    \"apartmentNumber\": \"564\",\r\n    \"addressType\": \"REGISTRATION\"\r\n  },\r\n  \"residentialAddress\": {\r\n    \"id\": 1,\r\n    \"region\": \"Voronezh region\",\r\n    \"city\": \"Voronezh\",\r\n    \"street\": \"Лизюкова\",\r\n    \"buildingNumber\": \"104б\",\r\n    \"apartmentNumber\": \"564\",\r\n    \"addressType\": \"REGISTRATION\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Аутентификация 2 пользователя",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n\r\n{\r\n    \"login\": \"AnnaVPonomareva@yandex.ru\",\r\n    \"password\": \"password\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/auth/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"auth",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Аутентификация 1 пользователя",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"anyvotinova@yandex.ru\",\r\n    \"password\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/auth/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"auth",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Аутентификация 3 пользователя Отрицательный Не тот пароль",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"annavotinova13@gmail.com\",\r\n    \"password\": \"string1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/auth/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"auth",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Аутентификация 3 пользователя Отрицательный Не та почта",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"votinova13@gmail.com\",\r\n    \"password\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/auth/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"auth",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Проверка токена и роли для 1 юзера и сервиса продукты - из сервиса аутентификации",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbnl2b3Rpbm92YUB5YW5kZXgucnUiLCJpYXQiOjE3MDI4NTA3ODMsImV4cCI6MTcwMjkzNzE4M30.9JY8N6eXll1zzKwwFuk_KNjF_ql8jVHygR2GQWC4spA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8085/auth/verify?service=product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"auth",
+						"verify"
+					],
+					"query": [
+						{
+							"key": "service",
+							"value": "product"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создание продукта",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbnl2b3Rpbm92YUB5YW5kZXgucnUiLCJpYXQiOjE3MDI4NzU2NjAsImV4cCI6MTcwMjk2MjA2MH0.jh76LrgVyaKxhYRpyY2ORG9mZdb67zDw9pdm9DV2puI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Золотая карта клиента\",\r\n  \"productType\": \"CARD\",\r\n  \"startDate\": \"2024-01-12\",\r\n  \"endDate\": \"2029-01-12\",\r\n  \"description\": \"Карта для постоянных клиентов с рассрочкой в магазинах-партнерах на 10 месяцев\",\r\n  \"author\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/product/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"product",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение текущей версии продукта",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbnl2b3Rpbm92YUB5YW5kZXgucnUiLCJpYXQiOjE3MDI4NzU2NjAsImV4cCI6MTcwMjk2MjA2MH0.jh76LrgVyaKxhYRpyY2ORG9mZdb67zDw9pdm9DV2puI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/product/audit/find/actual/d89126e9-249c-46c7-a0f2-5ff5af5af8e4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"product",
+						"audit",
+						"find",
+						"actual",
+						"d89126e9-249c-46c7-a0f2-5ff5af5af8e4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создание тарифа",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbnl2b3Rpbm92YUB5YW5kZXgucnUiLCJpYXQiOjE3MDI4NzU2NjAsImV4cCI6MTcwMjk2MjA2MH0.jh76LrgVyaKxhYRpyY2ORG9mZdb67zDw9pdm9DV2puI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Новогодний тариф для держателей золотых карт\",\r\n  \"startDate\": \"2024-01-12\",\r\n  \"endDate\": \"2026-01-12\",\r\n  \"description\": \"Специальный тариф на золотые карты на 2 года\",\r\n  \"rate\": 2000,\r\n  \"author\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/api/tariffs/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"tariffs",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Установка тарифа продукту",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbnl2b3Rpbm92YUB5YW5kZXgucnUiLCJpYXQiOjE3MDI4NzU2NjAsImV4cCI6MTcwMjk2MjA2MH0.jh76LrgVyaKxhYRpyY2ORG9mZdb67zDw9pdm9DV2puI",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8084/api/tariffs/install/d89126e9-249c-46c7-a0f2-5ff5af5af8e4/tariff/ab14f384-0b9e-4769-81ef-7caf4c2572b1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"api",
+						"tariffs",
+						"install",
+						"d89126e9-249c-46c7-a0f2-5ff5af5af8e4",
+						"tariff",
+						"ab14f384-0b9e-4769-81ef-7caf4c2572b1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
