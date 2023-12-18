@@ -1,6 +1,5 @@
 package com.neoflex.product.controller.api;
 
-import com.neoflex.product.dto.AccessToken;
 import com.neoflex.product.dto.ProductDto;
 import com.neoflex.product.service.AuditService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +30,7 @@ public class AuditController {
     @Operation(summary = "Получение текущей версии продукта",
             description = "Возвращает текущую версию продукта по его идентификатору")
     @GetMapping("/find/actual/{productId}")
-    public ProductDto getActualProductVersion(@RequestHeader("Authorization") AccessToken accessToken,
+    public ProductDto getActualProductVersion(@RequestHeader("Authorization") String accessToken,
                                               @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId) {
         log.info("Got the request for retrieving current version of the product with id {}", productId);
@@ -43,7 +42,7 @@ public class AuditController {
                     "возвращается")
     @GetMapping("/find/previous/{productId}")
     public List<ProductDto> getPreviousProductVersions(
-            @RequestHeader("Authorization") AccessToken accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId) {
         log.info("Got the request for retrieving previous versions of the product with id {}", productId);
@@ -55,7 +54,7 @@ public class AuditController {
                     "обе даты обязательно.")
     @GetMapping("/find/period/{productId}")
     public List<ProductDto> getProductVersionsByPeriod(
-            @RequestHeader("Authorization") AccessToken accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @Parameter(description = "Дата начала периода", example = "2024-01-12")
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @Parameter(description = "Дата окончания периода", example = "2029-01-12")
@@ -72,7 +71,7 @@ public class AuditController {
                     "значениями. Номер версии при этом возрастает.")
     @PutMapping("/revert/{productId}")
     public ProductDto revertProductVersion(
-            @RequestHeader("Authorization") AccessToken accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId,
             @PositiveOrZero @Parameter(description = "Версия продукта", example = "1") @RequestParam long version) {

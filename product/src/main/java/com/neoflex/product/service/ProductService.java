@@ -40,7 +40,7 @@ public class ProductService {
      * @param productDto - client's info about new product
      * @return a product with info about its version
      */
-    public ProductDto create(AccessToken accessToken, CreateProductDto productDto) {
+    public ProductDto create(String accessToken, CreateProductDto productDto) {
         verifyUser(accessToken);
         Product product = ProductMapper.toShortProduct(productDto);
         productRepository.save(product);
@@ -55,7 +55,7 @@ public class ProductService {
      * @return updated product
      * @throws com.neoflex.product.exception.ProductNotFoundException if the product with the given id does not exist
      */
-    public ProductDto update(AccessToken accessToken, UUID productId, UpdateProductDto newProduct) {
+    public ProductDto update(String accessToken, UUID productId, UpdateProductDto newProduct) {
         verifyUser(accessToken);
         Product oldProduct = findProductById(productId);
 
@@ -74,7 +74,7 @@ public class ProductService {
      * </p>
      * @param productId - a product id
      */
-    public void remove(AccessToken accessToken, UUID productId) {
+    public void remove(String accessToken, UUID productId) {
         verifyUser(accessToken);
         productRepository.deleteById(productId);
     }
@@ -137,7 +137,7 @@ public class ProductService {
         }
     }
 
-    private void verifyUser(AccessToken accessToken) {
+    private void verifyUser(String accessToken) {
         String login = authClient.verify(accessToken, SERVICE_NAME);
         log.info("Token {} verified. Username {}", accessToken, login);
     }

@@ -1,6 +1,5 @@
 package com.neoflex.product.integration.feign;
 
-import com.neoflex.product.dto.AccessToken;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -11,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AuthClient {
 
     @GetMapping("/verify")
-    String verify(@RequestHeader("Authorization") AccessToken accessToken, @RequestParam String service);
+    String verify(@RequestHeader("Authorization") String accessToken, @RequestParam String service);
 }

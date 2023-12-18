@@ -1,6 +1,5 @@
 package com.neoflex.product.service;
 
-import com.neoflex.product.dto.AccessToken;
 import com.neoflex.product.dto.ProductDto;
 import com.neoflex.product.entity.Product;
 import com.neoflex.product.exception.RevisionException;
@@ -45,7 +44,7 @@ public class AuditService {
      * @return the product with info about its author and version
      */
     @Transactional(readOnly = true)
-    public ProductDto getActualVersion(AccessToken accessToken, UUID productId) {
+    public ProductDto getActualVersion(String accessToken, UUID productId) {
         verifyUser(accessToken);
         Product actualProduct = getRevision(productId).getEntity();
         log.info("Actual version of the product {}", actualProduct);
@@ -60,7 +59,7 @@ public class AuditService {
      * @throws com.neoflex.product.exception.RevisionException if the revision for the product is not found
      */
     @Transactional(readOnly = true)
-    public List<ProductDto> getPreviousVersions(AccessToken accessToken, UUID productId) {
+    public List<ProductDto> getPreviousVersions(String accessToken, UUID productId) {
         verifyUser(accessToken);
         Product actualProduct = getRevision(productId).getEntity();
 
@@ -82,7 +81,7 @@ public class AuditService {
      * @throws com.neoflex.product.exception.ValidationException if the start date is after the end date
      */
     @Transactional(readOnly = true)
-    public List<ProductDto> getVersionsByPeriod(AccessToken accessToken, LocalDate fromDate, LocalDate toDate, UUID productId) {
+    public List<ProductDto> getVersionsByPeriod(String accessToken, LocalDate fromDate, LocalDate toDate, UUID productId) {
         verifyUser(accessToken);
         if (CheckDateUtil.isDateBefore(toDate, fromDate)) {
             throw new ValidationException("Дата окончания поиска не должна быть раньше даты начала поиска");
@@ -111,7 +110,7 @@ public class AuditService {
      * @return the product with a proper version
      */
     @Transactional
-    public ProductDto revertVersion(AccessToken accessToken, UUID productId, long version) {
+    public ProductDto revertVersion(String accessToken, UUID productId, long version) {
         verifyUser(accessToken);
         Revision<Long,Product> lastRevision = getRevision(productId);
 
@@ -160,7 +159,7 @@ public class AuditService {
         return updatingProduct;
     }
 
-    private void verifyUser(AccessToken accessToken) {
+    private void verifyUser(String accessToken) {
         String login = authClient.verify(accessToken, SERVICE_NAME);
         log.info("Token {} verified. Username {}", accessToken, login);
     }
