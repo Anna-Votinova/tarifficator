@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         "/auth/register",
                                         "/auth/authenticate",
-                                        "/api/auth/**")
+                                        "/api/auth/register",
+                                        "/api/auth/authenticate")
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )

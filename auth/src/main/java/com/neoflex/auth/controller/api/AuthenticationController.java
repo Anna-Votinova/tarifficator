@@ -48,7 +48,7 @@ public class AuthenticationController {
      */
     @GetMapping("/verify")
     @PreAuthorize("@authenticationController.checkServices(#service) eq true ")
-    public String verify(@RequestHeader("Authorization") AccessToken accessToken, @RequestParam @P("service") String service) {
+    public String verify(@RequestHeader("Authorization") String accessToken, @RequestParam @P("service") String service) {
         log.info("Got the request to verify token {} from service {}", accessToken, service);
         return authenticationService.getLogin();
     }
