@@ -1,6 +1,5 @@
 package com.neoflex.tariffs.controller.api;
 
-import com.neoflex.tariffs.dto.AccessToken;
 import com.neoflex.tariffs.dto.TariffCreateDto;
 import com.neoflex.tariffs.dto.TariffDto;
 import com.neoflex.tariffs.dto.TariffUpdateDto;
@@ -33,7 +32,7 @@ public class TariffController {
     @Operation(summary = "Создание тарифа",
             description = "Создает тариф для банковского продукта на основе введенных данных")
     @PostMapping("/create")
-    public TariffDto createTariff(@RequestHeader("Authorization") AccessToken accessToken,
+    public TariffDto createTariff(@RequestHeader("Authorization") String accessToken,
                                   @Valid @RequestBody TariffCreateDto tariffCreateDto) {
         log.info("Got the request for creating tariff {}", tariffCreateDto);
         return tariffService.createTariff(accessToken, tariffCreateDto);
@@ -43,7 +42,7 @@ public class TariffController {
             description = "Обновляет тариф для банковского продукта на основе введенных данных")
     @PutMapping("/update/{tariffId}")
     public TariffDto updateTariff(
-            @RequestHeader("Authorization") AccessToken accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @PathVariable @Parameter(description = "Идентификатор тарифа",
                     example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID tariffId,
             @Valid @RequestBody TariffUpdateDto tariffUpdateDto) {
@@ -54,7 +53,7 @@ public class TariffController {
     @Operation(summary = "Удаление тарифа",
             description = "Удаляет тариф по идентификатору")
     @DeleteMapping("/remove/{tariffId}")
-    public void removeTariff(@RequestHeader("Authorization") AccessToken accessToken,
+    public void removeTariff(@RequestHeader("Authorization") String accessToken,
                              @PathVariable @Parameter(description = "Идентификатор тарифа",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID tariffId) {
         log.info("Got the request for deleting the tariff with id {}", tariffId);
@@ -65,7 +64,7 @@ public class TariffController {
     @Operation(summary = "Установка тарифа продукту",
             description = "Устанавливает тариф продукту по их идентификаторам")
     @PutMapping("/install/{productId}/tariff/{tariffId}")
-    public void installTariff(@RequestHeader("Authorization") AccessToken accessToken,
+    public void installTariff(@RequestHeader("Authorization") String accessToken,
                               @PathVariable @Parameter(description = "Идентификатор продукта",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID productId,
                               @PathVariable @Parameter(description = "Идентификатор тарифа",
@@ -77,7 +76,7 @@ public class TariffController {
     @Operation(summary = "Получение тарифа",
             description = "Возвращает тариф по id")
     @GetMapping("/{tariffId}")
-    public TariffDto getTariff(@RequestHeader("Authorization") AccessToken accessToken,
+    public TariffDto getTariff(@RequestHeader("Authorization") String accessToken,
                                @PathVariable @Parameter(description = "Идентификатор тарифа",
             example = "123e4567-e89b-42d3-a456-556642440000", required = true) UUID tariffId) {
         log.info("Got the request to get a tariff with {}", tariffId);
@@ -88,7 +87,7 @@ public class TariffController {
             description = "Возвращает список тарифов в зависимости от поисковой фразы и страниц выдачи результата")
     @GetMapping()
     public List<TariffDto> getAll(
-            @RequestHeader("Authorization") AccessToken accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @Parameter(description = "Текст для поиска по названию и описанию", example = "новогодний")
             @RequestParam(required = false) String searchPhrase,
             @PositiveOrZero @Parameter(description = "Начальная страница для поиска", example = "0")

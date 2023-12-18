@@ -36,7 +36,7 @@ public class TariffService {
      * @param tariffCreateDto - tariff info to save
      * @return a new tariff with info about itd author and version
      */
-    public TariffDto createTariff(AccessToken accessToken, TariffCreateDto tariffCreateDto) {
+    public TariffDto createTariff(String accessToken, TariffCreateDto tariffCreateDto) {
         verifyUser(accessToken);
         Tariff newTariff = TariffMapper.toTariff(tariffCreateDto);
         Tariff createdTariff = tariffRepository.save(newTariff);
@@ -51,7 +51,7 @@ public class TariffService {
      * @return an updated tariff
      * @throws com.neoflex.tariffs.exception.TariffNotFoundException if the tariff with the given id does not exist
      */
-    public TariffDto updateTariff(AccessToken accessToken, UUID tariffId, TariffUpdateDto tariffUpdateDto) {
+    public TariffDto updateTariff(String accessToken, UUID tariffId, TariffUpdateDto tariffUpdateDto) {
         verifyUser(accessToken);
 
         Tariff exixtingTariff = findTariff(tariffId);
@@ -70,7 +70,7 @@ public class TariffService {
      * </p>
      * @param tariffId - a tariff id
      */
-    public void removeTariff(AccessToken accessToken, UUID tariffId) {
+    public void removeTariff(String accessToken, UUID tariffId) {
         verifyUser(accessToken);
         tariffRepository.deleteById(tariffId);
     }
@@ -81,7 +81,7 @@ public class TariffService {
      * @param tariffId - a tariff id
      * @throws com.neoflex.tariffs.exception.TariffNotFoundException if the tariff with the given id does not exist
      */
-    public TariffDto getTariff(AccessToken accessToken, UUID tariffId) {
+    public TariffDto getTariff(String accessToken, UUID tariffId) {
         verifyUser(accessToken);
         Tariff tariff = findTariff(tariffId);
         return TariffMapper.toTariffDto(tariff);
@@ -97,7 +97,7 @@ public class TariffService {
      * @throws com.neoflex.tariffs.exception.ValidationException if the start page is greater than the finish page
      */
     @Transactional(readOnly = true)
-    public List<TariffDto> getAll(AccessToken accessToken, String searchPhrase, int fromPage, int toPage) {
+    public List<TariffDto> getAll(String accessToken, String searchPhrase, int fromPage, int toPage) {
         verifyUser(accessToken);
         checkPages(fromPage, toPage);
         Pageable pageable = PageRequest.of(fromPage, toPage);
@@ -126,7 +126,7 @@ public class TariffService {
      * @throws com.neoflex.tariffs.exception.TariffNotFoundException if the tariff with the given id does not exist
      */
     @Transactional
-    public void installTariff(AccessToken accessToken, UUID productId, UUID tariffId) {
+    public void installTariff(String accessToken, UUID productId, UUID tariffId) {
         String login = authClient.verify(accessToken, SERVICE_NAME);
         log.info("Token {} verified. Username {}", accessToken, login);
 
@@ -146,7 +146,7 @@ public class TariffService {
         }
     }
 
-    private void verifyUser(AccessToken accessToken) {
+    private void verifyUser(String accessToken) {
         String login = authClient.verify(accessToken, SERVICE_NAME);
         log.info("Token {} verified. Username {}", accessToken, login);
     }
